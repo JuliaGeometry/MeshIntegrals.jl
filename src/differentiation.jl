@@ -14,10 +14,10 @@ finite-difference approximation with step size `ε`.
 - `ε`: step size to use for the finite-difference approximation
 """
 function jacobian(
-        geometry::G,
+        geometry::Meshes.Geometry,
         ts::V;
         ε = 1e-6
-) where {G <: Meshes.Geometry, V <: Union{AbstractVector, Tuple}}
+) where {V <: Union{AbstractVector, Tuple}}
     Dim = Meshes.paramdim(geometry)
     if Dim != length(ts)
         throw(ArgumentError("ts must have same number of dimensions as geometry."))
@@ -85,22 +85,13 @@ end
 """
     differential(geometry, ts)
 
-Calculate the differential element (length, area, volume, etc) of the parametric
-function for `geometry` at arguments `ts`.
+Return the magnitude of the differential element (length, area, volume, etc) of
+the parametric function for `geometry` at arguments `ts`.
 """
 function differential(
-        geometry::G,
+        geometry::Meshes.Geometry,
         ts::V
-) where {M, CRS, G <: Meshes.Geometry{M, CRS}, V <: Union{AbstractVector, Tuple}}
-    # Calculate the Jacobian, convert Vec -> KVector
-    J = jacobian(geometry, ts)
-    J_kvecs = Iterators.map(_kvector, J)
-
-    # Extract units from Geometry type
-    Dim = Meshes.paramdim(geometry)
-    units = _units(geometry)^Dim
-
-    # Return norm of the exterior products
-    element = foldl(∧, J_kvecs)
-    return LinearAlgebra.norm(element) * units
+) where {V <: Union{AbstractVector, Tuple}}
+    J = Iterators.map(_KVector, jacobian(geometry, ts))
+    return LinearAlgebra.norm(foldl(∧, J))
 end
