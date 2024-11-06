@@ -43,8 +43,21 @@ These solutions are currently defined only for a subset of geometry types.
 """
 struct Analytical <: DifferentiationMethod end
 
+"""
+    AutoEnzyme()
+
+Use to specify use of the Enzyme.jl for calculating derivatives.
+"""
+struct AutoEnzyme <: DifferentiationMethod
+    function AutoEnzyme()
+        if :Enzyme ∉ names(Main, imported = true)
+            error("Please load Enzyme.jl to use AutoEnzyme().")
+        end
+        return new()
+    end
+end
+
 # Future Support:
-#   struct AutoEnzyme <: DifferentiationMethod end
 #   struct AutoZygote <: DifferentiationMethod end
 
 ################################################################################
@@ -86,7 +99,7 @@ function jacobian(
     # Get the partial derivative along the n'th axis via finite difference
     #   approximation, where ts is the current parametric position
     function ∂ₙr(ts, n)
-        # Build left/right parametric coordinates with non-allocating iterators 
+        # Build left/right parametric coordinates with non-allocating iterators
         left = Iterators.map(((i, t),) -> i == n ? t - ε : t, enumerate(ts))
         right = Iterators.map(((i, t),) -> i == n ? t + ε : t, enumerate(ts))
         # Select orientation of finite-diff

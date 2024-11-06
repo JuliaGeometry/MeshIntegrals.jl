@@ -12,9 +12,16 @@ Meshes = "eacbb407-ea5a-433e-ab97-5258b1ca43fa"
 QuadGK = "1fd47b50-473d-5c70-9696-f719f8f3bcdc"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
+[weakdeps]
+Enzyme = "7da242da-08ed-463a-9acd-ee780be4f1d9"
+
+[extensions]
+MeshIntegralsEnzymeExt = "Enzyme"
+
 [compat]
 CliffordNumbers = "0.1.4"
 CoordRefSystems = "0.12, 0.13, 0.14, 0.15"
+Enzyme = "0.13.12"
 FastGaussQuadrature = "1"
 HCubature = "1.5"
 LinearAlgebra = "1"
