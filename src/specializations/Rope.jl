@@ -35,3 +35,27 @@ function integral(
     # Convert the Rope into Segments, sum the integrals of those
     return sum(segment -> integral(f, segment, rule; kwargs...), Meshes.segments(rope))
 end
+
+# Use HCubature.hcubature_buffer to reduce allocations
+function integral(
+    f,
+    rope::Meshes.Rope,
+    rule::HAdaptiveCubature;
+    FP::Type{T} = Float64,
+    kwargs...
+) where {T <: AbstractFloat}
+    # Geometry information
+    N = Meshes.paramdim(rope)
+    segments = Meshes.segments(rope)
+
+    # Use a sample integrand to develop and append a buffer to the given rule
+    sample = first(segments)
+    integrand(ts) = f(sample(ts...)) * differential(sample, ts)
+    uintegrand(ts) = Unitful.ustrip.(integrand(ts))
+    buffer = HCubature.hcubature_buffer(uintegrand, _zeros(FP, N), _ones(FP, N))
+    rule = HAdaptiveCubature(rule.kwargs..., buffer = buffer)
+
+    # Convert the Rope into Segments, sum the integrals of those
+    _subintegral(seg) = _integral(f, seg, rule; FP = FP, kwargs...)
+    return sum(_subintegral, segments)
+end

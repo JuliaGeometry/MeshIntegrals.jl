@@ -41,11 +41,8 @@ end
 spec = (
     f = p -> norm(to(p)),
     f_exp = p::Point -> exp(-norm(to(p))^2 / u"m^2"),
-    g = (
+    geometries = (
         bezier = BezierCurve([Point(t, sin(t), 0) for t in range(-pi, pi, length = 361)]),
-        line = Line(Point(0, 0, 0), Point(1, 1, 1)),
-        plane = Plane(Point(0, 0, 0), Vec(0, 0, 1)),
-        ray = Ray(Point(0, 0, 0), Vec(0, 0, 1)),
         rope = Rope([Point(t, t, t) for t in 1:32]...),
         triangle = Triangle(Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1)),
         tetrahedron = let
@@ -56,19 +53,27 @@ spec = (
             Tetrahedron(a, b, c, a + ẑ)
         end
     ),
-    rule_gl = GaussLegendre(100),
-    rule_gk = GaussKronrod(),
-    rule_hc = HAdaptiveCubature()
+    geometries_exp = (
+        line = Line(Point(0, 0, 0), Point(1, 1, 1)),
+        plane = Plane(Point(0, 0, 0), Vec(0, 0, 1)),
+        ray = Ray(Point(0, 0, 0), Vec(0, 0, 1))
+    ),
+    rules = (
+            ( name = "GaussLegendre", rule = GaussLegendre(100) ),
+            ( name = "HAdaptiveCubature", rule = HAdaptiveCubature() )
+    )
 )
 
-SUITE["Specializations/Scalar GaussLegendre"] = let s = BenchmarkGroup()
-    s["BezierCurve"] = @benchmarkable integral($spec.f, $spec.g.bezier, $spec.rule_gl)
-    s["Line"] = @benchmarkable integral($spec.f_exp, $spec.g.line, $spec.rule_gl)
-    s["Plane"] = @benchmarkable integral($spec.f_exp, $spec.g.plane, $spec.rule_gl)
-    s["Ray"] = @benchmarkable integral($spec.f_exp, $spec.g.ray, $spec.rule_gl)
-    s["Rope"] = @benchmarkable integral($spec.f, $spec.g.rope, $spec.rule_gl)
-    s["Triangle"] = @benchmarkable integral($spec.f, $spec.g.triangle, $spec.rule_gl)
-    s["Tetrahedron"] = @benchmarkable integral($spec.f, $spec.g.tetrahedron, $spec.rule_gl)
+SUITE["Specializations"] = let s = BenchmarkGroup()
+    s[]
+    for r in spec.rules, geometry in spec.geometries
+        geometry_name = nameof(typeof(geometry))
+        s[geometry_name, r.name] = @benchmarkable integral($spec.f, geometry, r.rule)
+    end
+    for r in spec.rules, geometry in spec.geometries_exp
+        geometry_name = nameof(typeof(geometry))
+        s[geometry_name, r.name] = @benchmarkable integral($spec.f_exp, geometry, r.rule)
+    end
     s
 end
 
