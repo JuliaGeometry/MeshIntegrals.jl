@@ -581,13 +581,11 @@ end
         d = Point(-1, 1, 0)
         apex = Point(0, 0, 1)
         pyramid = Pyramid(a, b, c, d, apex)
-    
         # Integrand & Solution
         integrand(p) = 1.0u"A"
         w = norm(b - a)
         h = norm(d - a)
         solution = (1 // 3) * w * h * u"A*m"
-    
         # Package and run tests
         testable = TestableGeometry(integrand, pyramid, solution)
         runtests(testable)
