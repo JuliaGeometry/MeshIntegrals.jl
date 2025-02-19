@@ -1,7 +1,9 @@
 # Branch TODO
 
 - Add official support/tests for `Frustum`, `Pyramid`, and `Wedge`
-  - Add `@testitem`s conditional upon having Meshes >=v0.52.12 installed
+  - Verify `Frustum`
+  - Verify `Pyramid`
+  - Verify `Wedge`
   - Update the Support Matrix in docs
 
 # MeshIntegrals.jl
