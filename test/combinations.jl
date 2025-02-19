@@ -740,15 +740,15 @@ end
     runtests(testable)
 end
 
-testitem "Meshes.Wedge" setup=[Combinations] begin
+@testitem "Meshes.Wedge" setup=[Combinations] begin
     # Geometry
-    a0 = Point(0, 0, 0)
-    b0 = Point(1, 0, 0)
-    c0 = Point(0, 1, 0)
-    a1 = Point(0, 0, 1)
-    b1 = Point(1, 0, 1)
-    c1 = Point(0, 1, 1)
-    wedge = Wedge(a0, b0, c0, a1, b1, c1)
+    a₀ = Point(0, 0, 0)
+    b₀ = Point(1, 0, 0)
+    c₀ = Point(0, 1, 0)
+    a₁ = Point(0, 0, 1)
+    b₁ = Point(1, 0, 1)
+    c₁ = Point(0, 1, 1)
+    wedge = Wedge(a₀, b₀, c₀, a₁, b₁, c₁)
 
     # Integrand & Solution
     function integrand(p::Meshes.Point)
