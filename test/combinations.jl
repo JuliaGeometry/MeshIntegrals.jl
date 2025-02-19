@@ -440,6 +440,10 @@ end
         # Integrand & Solution
         integrand(p) = 1.0u"A"
         solution = (7 // 8) * (π * r^2 * h / 3) * u"A"
+
+        # Package and run tests
+        testable = TestableGeometry(integrand, frustum, solution)
+        runtests(testable)
     end
 end
 
