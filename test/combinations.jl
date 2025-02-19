@@ -741,23 +741,25 @@ end
 end
 
 @testitem "Meshes.Wedge" setup=[Combinations] begin
-    # Geometry
-    a₀ = Point(0, 0, 0)
-    b₀ = Point(1, 0, 0)
-    c₀ = Point(0, 1, 0)
-    a₁ = Point(0, 0, 1)
-    b₁ = Point(1, 0, 1)
-    c₁ = Point(0, 1, 1)
-    wedge = Wedge(a₀, b₀, c₀, a₁, b₁, c₁)
+    if pkgversion(Meshes) >= v"0.52.12"
+        # Geometry
+        a₀ = Point(0, 0, 0)
+        b₀ = Point(1, 0, 0)
+        c₀ = Point(0, 1, 0)
+        a₁ = Point(0, 0, 1)
+        b₁ = Point(1, 0, 1)
+        c₁ = Point(0, 1, 1)
+        wedge = Wedge(a₀, b₀, c₀, a₁, b₁, c₁)
 
-    # Integrand & Solution
-    function integrand(p::Meshes.Point)
-        x, y, z = ustrip.(u"m", to(p))
-        (x + 2y + 3z) * u"A"
+        # Integrand & Solution
+        function integrand(p::Meshes.Point)
+            x, y, z = ustrip.(u"m", to(p))
+            (x + 2y + 3z) * u"A"
+        end
+        solution = (1 // 2) * u"A*m^3"
+
+        # Package and run tests
+        testable = TestableGeometry(integrand, wedge, solution)
+        runtests(testable)
     end
-    solution = (1 // 2) * u"A*m^3"
-
-    # Package and run tests
-    testable = TestableGeometry(integrand, wedge, solution)
-    runtests(testable)
 end
