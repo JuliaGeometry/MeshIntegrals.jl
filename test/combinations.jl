@@ -516,6 +516,7 @@ end
 end
 
 @testitem "Meshes.ParaboloidSurface" setup=[Combinations] begin
+    # Geometry
     origin = Point(0, 0, 0)
     parab = ParaboloidSurface(origin, 2.5, 4.15)
 
@@ -574,6 +575,22 @@ end
 @testitem "Meshes.Pyramid" setup=[Combinations] begin
     if pkgversion(Meshes) >= v"0.52.12"
         # Geometry
+        a = Point(-1, -1, 0)
+        b = Point(1, -1, 0)
+        c = Point(1, 1, 0)
+        d = Point(-1, 1, 0)
+        apex = Point(0, 0, 1)
+        pyramid = Pyramid(a, b, c, d, apex)
+    
+        # Integrand & Solution
+        integrand(p) = 1.0u"A"
+        w = norm(b - a)
+        h = norm(d - a)
+        solution = (1 // 3) * w * h * u"A*m"
+    
+        # Package and run tests
+        testable = TestableGeometry(integrand, pyramid, solution)
+        runtests(testable)
     end
 end
 
