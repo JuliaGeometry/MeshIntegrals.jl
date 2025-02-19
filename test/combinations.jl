@@ -739,3 +739,25 @@ end
     testable = TestableGeometry(integrand, triangle, solution)
     runtests(testable)
 end
+
+testitem "Meshes.Wedge" setup=[Combinations] begin
+    # Geometry
+    a0 = Point(0, 0, 0)
+    b0 = Point(1, 0, 0)
+    c0 = Point(0, 1, 0)
+    a1 = Point(0, 0, 1)
+    b1 = Point(1, 0, 1)
+    c1 = Point(0, 1, 1)
+    wedge = Wedge(a0, b0, c0, a1, b1, c1)
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point)
+        x, y, z = ustrip.(u"m", to(p))
+        (x + 2y + 3z) * u"A"
+    end
+    solution = (1 // 2) * u"A*m^3"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, wedge, solution)
+    runtests(testable)
+end
