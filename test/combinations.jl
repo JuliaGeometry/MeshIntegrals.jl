@@ -422,6 +422,12 @@ end
     runtests(testable; rtol = 1e-2)
 end
 
+@testitem "Meshes.Frustum" setup=[Combinations] begin
+    if pkgversion(Meshes) >= v"0.52.12"
+        # Geometry
+    end
+end
+
 @testitem "Meshes.FrustumSurface" setup=[Combinations] begin
     # Geometry
     # Create a frustum whose radius halves at the top, i.e. the bottom half of a cone
@@ -544,6 +550,12 @@ end
     # Package and run tests
     testable = TestableGeometry(integrand, plane, solution)
     runtests(testable)
+end
+
+@testitem "Meshes.Pyramid" setup=[Combinations] begin
+    if pkgversion(Meshes) >= v"0.52.12"
+        # Geometry
+    end
 end
 
 @testitem "Meshes.Quadrangle" setup=[Combinations] begin
