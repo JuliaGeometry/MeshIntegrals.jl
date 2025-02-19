@@ -1,11 +1,3 @@
-# Branch TODO
-
-- Add official support/tests for `Frustum`, `Pyramid`, and `Wedge`
-  - Verify `Frustum`
-  - Verify `Pyramid`
-  - Verify `Wedge`
-  - Update the Support Matrix in docs
-
 # MeshIntegrals.jl
 
 [![Docs-stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaGeometry.github.io/MeshIntegrals.jl/stable/)
