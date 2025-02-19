@@ -804,7 +804,7 @@ end
             x, y, z = ustrip.(u"m", to(p))
             (x + 2y + 3z) * u"A"
         end
-        solution = (1 // 2) * u"A*m^3"
+        solution = (5 // 4) * u"A*m^3"
 
         # Package and run tests
         testable = TestableGeometry(integrand, wedge, solution)
