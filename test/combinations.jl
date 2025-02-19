@@ -425,7 +425,22 @@ end
 @testitem "Meshes.Frustum" setup=[Combinations] begin
     if pkgversion(Meshes) >= v"0.52.12"
         # Geometry
-    end
+        r = 2.5u"m"
+        h = 3.5u"m"
+        origin = Point(0, 0, 0)
+        midpoint = Point(0.0u"m", 0.0u"m", 0.5 * h)
+        apex = Point(0.0u"m", 0.0u"m", h)
+        ẑ = Vec(0, 0, 1)
+        xy_plane = Plane(origin, ẑ)
+        base = Disk(xy_plane, r)
+        mid_plane = Plane(midpoint, ẑ)
+        mid_disk = Disk(mid_plane, 0.5 * r)
+        frustum = Frustum(base, mid_disk)
+
+        # Integrand & Solution
+        integrand(p) = 1.0u"A"
+        solution = (7 // 8) * (π * r^2 * h / 3) * u"A"
+    #end
 end
 
 @testitem "Meshes.FrustumSurface" setup=[Combinations] begin
