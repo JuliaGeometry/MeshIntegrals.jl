@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add official support for Frustum, Pyramid, and Wedge geometries.
+
 ### Changed
 
 - Improved unit tests for `Meshes.Cylinder` and `Meshes.CylinderSurface` ([GitHub Issue #67](https://github.com/JuliaGeometry/MeshIntegrals.jl/issues/67)).
