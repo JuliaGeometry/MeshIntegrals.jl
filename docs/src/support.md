@@ -41,7 +41,7 @@ designed to check for accuracy.
 | `CylinderSurface` | ⚠️ | ✅ | ✅ |
 | `Disk` | ⚠️ | ✅ | ✅ |
 | `Ellipsoid` | ✅ | ✅ | ✅ |
-| `Frustum` | 🛑 | 🎗️ | 🎗️ |
+| `Frustum` | ⚠️ | ✅ | ✅ |
 | `FrustumSurface` | ⚠️ | ✅ | ✅ |
 | `Hexahedron` | ✅ | ✅ | ✅ |
 | `Line` | ✅ | ✅ | ✅ |
@@ -49,7 +49,7 @@ designed to check for accuracy.
 | `ParametrizedCurve` | ✅ | ✅ | ✅ |
 | `Plane` | ✅ | ✅ | ✅ |
 | `Polyarea` | 🛑 | [🎗️](https://github.com/JuliaGeometry/MeshIntegrals.jl/issues/28) | [🎗️](https://github.com/JuliaGeometry/MeshIntegrals.jl/issues/28) |
-| `Pyramid` | 🛑 | 🎗️ | 🎗️ |
+| `Pyramid` | ⚠️ | ✅ | ✅ |
 | `Quadrangle` | ⚠️ | ✅ | ✅ |
 | `Ray` | ✅ | ✅ | ✅ |
 | `Ring` | ✅ | ✅ | ✅ |
@@ -61,7 +61,7 @@ designed to check for accuracy.
 | `Tetrahedron` | ⚠️ | ✅ | ✅ |
 | `Triangle` | ✅ | ✅ | ✅ |
 | `Torus` | ⚠️ | ✅ | ✅ |
-| `Wedge` | 🛑 | 🎗️ | 🎗️ |
+| `Wedge` | ⚠️ | ✅ | ✅ |
 
 | Symbol | Support Level |
 |--------|---------|
