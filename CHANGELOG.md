@@ -7,13 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.16.2] - 2025-03-16
+
 ### Added
 
-- Add official support for Frustum, Pyramid, and Wedge geometries.
+- Add official support for integrating over `Frustum`, `Pyramid`, and `Wedge` geometries ([#168](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/168)).
 
 ### Changed
 
-- Improved unit tests for `Meshes.Cylinder` and `Meshes.CylinderSurface` ([GitHub Issue #67](https://github.com/JuliaGeometry/MeshIntegrals.jl/issues/67)).
+- Improved unit testing with analytical solutions ([#162](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/162), [#166](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/166)).
+- Made significant improvements to documentation ([#165](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/165)).
+- Updated compatibility entry for [Meshes.jl](https://github.com/JuliaGeometry/Meshes.jl) to support v0.53 ([#170](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/170), [#171](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/171)).
+- Updates several CI dependencies ([#163](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/163), [#167](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/167), [#172](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/172)).
+
 
 ## [0.16.1] - 2024-12-29
 
