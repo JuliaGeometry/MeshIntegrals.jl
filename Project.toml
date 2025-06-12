@@ -21,7 +21,7 @@ MeshIntegralsEnzymeExt = "Enzyme"
 [compat]
 CliffordNumbers = "0.1.9"
 CoordRefSystems = "0.15, 0.16, 0.17, 0.18"
-Enzyme = "0.13.19"
+Enzyme = "0.13.45"
 FastGaussQuadrature = "1"
 HCubature = "1.5"
 LinearAlgebra = "1"
