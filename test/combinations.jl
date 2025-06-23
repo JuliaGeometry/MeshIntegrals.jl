@@ -49,7 +49,7 @@ This file includes tests for:
     end
 
     # Shortcut constructor for geometries with typical support structure
-    function SupportStatus(geometry::G;) where {G <: Geometry}
+    function SupportStatus(geometry::Geometry)
         # Check whether AutoEnzyme should be supported, i.e. not on blacklist
         unsupported_Gs = Union{BezierCurve, Cylinder, CylinderSurface, ParametrizedCurve}
         autoenzyme = !(G <: unsupported_Gs)
@@ -677,7 +677,7 @@ end
 
     # Integrand & Solution
     a, b = (7.1, 4.6)  # arbitrary constants > 0
-    function integrand(p::P; a = a, b = b) where {P <: Meshes.Point}
+    function integrand(p::Meshes.Point; a = a, b = b)
         r = ustrip(u"m", norm(to(p)))
         exp(r * log(a) + (1 - r) * log(b)) * u"A"
     end
@@ -686,6 +686,26 @@ end
     # Package and run tests
     testable = TestableGeometry(integrand, segment, solution)
     runtests(testable)
+end
+
+@testitem "Meshes.SimpleMesh" setup=[Combinations] begin
+    # Geometry
+    a = π
+    points = [(0, 0), (a, 0), (0, a), (a, a), (0.25a, 0.5a), (0.75a, 0.5a)]
+    tris  = connect.([(1, 5, 3), (4, 6, 2)], Triangle)
+    quads = connect.([(1, 2, 6, 5), (4, 3, 5, 6)], Quadrangle)
+    mesh = SimpleMesh(points, [tris; quads])
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point; a = a)
+        x₁, x₂ = ustrip.((to(p)))
+        (√(a^2 - x₁^2) + √(a^2 - x₂^2)) * u"A"
+    end
+    solution = 2a * (π * a^2 / 4) * u"A*m^2"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, mesh, solution)
+    runtests(testable; rtol = 1e-6)
 end
 
 @testitem "Meshes.Sphere 2D" setup=[Combinations] begin
