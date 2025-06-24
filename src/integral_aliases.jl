@@ -16,7 +16,7 @@ Rule types available:
 """
 function lineintegral(
         f,
-        geometry::Geometry,
+        geometry::Meshes.GeometryOrDomain,
         rule::IntegrationRule = GaussKronrod();
         kwargs...
 )
@@ -48,7 +48,7 @@ Algorithm types available:
 """
 function surfaceintegral(
         f,
-        geometry::Geometry,
+        geometry::Meshes.GeometryOrDomain,
         rule::IntegrationRule = HAdaptiveCubature();
         kwargs...
 )
@@ -80,7 +80,7 @@ Algorithm types available:
 """
 function volumeintegral(
         f,
-        geometry::Geometry,
+        geometry::Meshes.GeometryOrDomain,
         rule::IntegrationRule = HAdaptiveCubature();
         kwargs...
 )
