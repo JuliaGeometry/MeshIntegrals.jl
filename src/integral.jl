@@ -39,7 +39,7 @@ function integral(
         kwargs...
 ) where {I <: IntegrationRule}
     # Discretize the Domain into primitive geometries, sum the integrals over those
-    subgeometries = elements(discretize(domain))
+    subgeometries = Meshes.elements(Meshes.discretize(domain))
     return sum(geometry -> _integral(f, geometry, rule; kwargs...), subgeometries)
 end
 
