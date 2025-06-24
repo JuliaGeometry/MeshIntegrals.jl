@@ -49,7 +49,7 @@ This file includes tests for:
     end
 
     # Shortcut constructor for geometries with typical support structure
-    function SupportStatus(geometry::Geometry)
+    function SupportStatus(geometry::G) where {G <: Meshes.GeometryOrDomain}
         # Check whether AutoEnzyme should be supported, i.e. not on blacklist
         unsupported_Gs = Union{BezierCurve, Cylinder, CylinderSurface, ParametrizedCurve}
         autoenzyme = !(G <: unsupported_Gs)
