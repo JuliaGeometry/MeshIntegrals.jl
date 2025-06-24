@@ -1,7 +1,7 @@
 module MeshIntegrals
 using CliffordNumbers: CliffordNumbers, VGA, ∧
 using CoordRefSystems: CoordRefSystems, CRS
-using Meshes: Meshes, Geometry
+using Meshes: Meshes, Geometry, GeometryOrDomain
 
 import FastGaussQuadrature
 import HCubature
