@@ -34,7 +34,7 @@ end
 
 function integral(
         f,
-        domain::Domain,
+        domain::Meshes.Domain,
         rule::I = Meshes.paramdim(geometry) == 1 ? GaussKronrod() : HAdaptiveCubature();
         kwargs...
 ) where {I <: IntegrationRule}
