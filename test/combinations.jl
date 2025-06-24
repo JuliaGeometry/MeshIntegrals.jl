@@ -28,7 +28,7 @@ This file includes tests for:
     (c::Callable)(p::Meshes.Point) = c.f(p)
 
     # Stores a testable combination
-    struct TestableGeometry{F <: Function, G <: GeometryOrDomain, U <: Unitful.Quantity}
+    struct TestableGeometry{F <: Function, G <: Meshes.GeometryOrDomain, U <: Unitful.Quantity}
         integrand::F
         geometry::G
         solution::U
@@ -49,7 +49,7 @@ This file includes tests for:
     end
 
     # Shortcut constructor for geometries with typical support structure
-    function SupportStatus(geometry::G) where {G <: GeometryOrDomain}
+    function SupportStatus(geometry::G) where {G <: Meshes.GeometryOrDomain}
         # Check whether AutoEnzyme should be supported, i.e. not on blacklist
         unsupported_Gs = Union{BezierCurve, Cylinder, CylinderSurface, ParametrizedCurve}
         autoenzyme = !(G <: unsupported_Gs)
