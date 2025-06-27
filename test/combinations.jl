@@ -18,7 +18,7 @@ This file includes tests for:
     import LinearAlgebra: norm
     using Meshes
     using MeshIntegrals
-    import Unitful: @u_str, Quantity
+    import Unitful: @u_str, Quantity, ustrip
     import Enzyme
 
     # Used for testing callable objects as integrand functions
@@ -270,6 +270,26 @@ end
     # Package and run tests
     testable = TestableGeometry(integrand, box, solution)
     runtests(testable; rtol = 1e-6)
+end
+
+@testitem "Meshes.CartesianGrid" setup=[Combinations] begin
+    # Geometry
+    a = π
+    start = Point(0, 0)
+    finish = Point(a, a)
+    dims = (4, 4)
+    grid = CartesianGrid(start, finish, dims=dims)
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point)
+        x₁, x₂ = ustrip.(to(p))
+        (√(a^2 - x₁^2) + √(a^2 - x₂^2)) * u"A"
+    end
+    solution = 2a * (π * a^2 / 4) * u"A*m^2"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, grid, solution)
+    runtests(testable)
 end
 
 @testitem "Meshes.Circle" setup=[Combinations] begin
