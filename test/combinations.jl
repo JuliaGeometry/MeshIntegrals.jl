@@ -18,7 +18,7 @@ This file includes tests for:
     using LinearAlgebra: norm
     using Meshes
     using MeshIntegrals
-    using Unitful
+    using Unitful: Quantity
     import Enzyme
 
     # Used for testing callable objects as integrand functions
@@ -28,7 +28,7 @@ This file includes tests for:
     (c::Callable)(p::Meshes.Point) = c.f(p)
 
     # Stores a testable combination
-    struct TestableGeometry{F <: Function, G <: Meshes.GeometryOrDomain, U <: Unitful.Quantity}
+    struct TestableGeometry{F <: Function, G <: Meshes.GeometryOrDomain, U <: Quantity}
         integrand::F
         geometry::G
         solution::U
@@ -692,7 +692,7 @@ end
     # Geometry
     a = π
     points = [(0, 0), (a, 0), (0, a), (a, a), (0.25a, 0.5a), (0.75a, 0.5a)]
-    tris  = connect.([(1, 5, 3), (4, 6, 2)], Triangle)
+    tris = connect.([(1, 5, 3), (4, 6, 2)], Triangle)
     quads = connect.([(1, 2, 6, 5), (4, 3, 5, 6)], Quadrangle)
     mesh = SimpleMesh(points, [tris; quads])
 
