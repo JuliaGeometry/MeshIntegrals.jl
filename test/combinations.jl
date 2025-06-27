@@ -278,7 +278,7 @@ end
     start = Point(0, 0)
     finish = Point(a, a)
     dims = (4, 4)
-    grid = CartesianGrid(start, finish, dims=dims)
+    grid = CartesianGrid(start, finish, dims = dims)
 
     # Integrand & Solution
     function integrand(p::Meshes.Point)
@@ -654,7 +654,7 @@ end
     start = Point(0, 0, 0)
     finish = Point(a, a, a)
     dims = (4, 4, 4)
-    grid = RegularGrid(start, finish, dims=dims)
+    grid = RegularGrid(start, finish, dims = dims)
 
     # Integrand & Solution
     function integrand(p::Meshes.Point)
