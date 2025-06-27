@@ -15,10 +15,10 @@ This file includes tests for:
 
 @testsnippet Combinations begin
     using CoordRefSystems
-    using LinearAlgebra: norm
+    import LinearAlgebra: norm
     using Meshes
     using MeshIntegrals
-    using Unitful: Quantity
+    import Unitful: @u_str, Quantity
     import Enzyme
 
     # Used for testing callable objects as integrand functions
