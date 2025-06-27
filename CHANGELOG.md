@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.3] - 2025-06-26
+
+### Changed
+
+- Updated compatibility entry for [CoordRefSystems.jl](https://github.com/JuliaEarth/CoordRefSystems.jl) to support v0.17 and v0.18 ([#175](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/175), [#180](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/180)).
+
 
 ## [0.16.2] - 2025-03-16
 
