@@ -32,6 +32,17 @@ function integral(
     _integral(f, geometry, rule; kwargs...)
 end
 
+function integral(
+        f,
+        domain::Meshes.Domain,
+        rule::I = Meshes.paramdim(domain) == 1 ? GaussKronrod() : HAdaptiveCubature();
+        kwargs...
+) where {I <: IntegrationRule}
+    # Discretize the Domain into primitive geometries, sum the integrals over those
+    subgeometries = Meshes.elements(Meshes.discretize(domain))
+    return sum(geometry -> _integral(f, geometry, rule; kwargs...), subgeometries)
+end
+
 ################################################################################
 #                            Integral Workers
 ################################################################################
