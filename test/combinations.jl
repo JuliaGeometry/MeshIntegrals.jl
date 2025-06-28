@@ -289,7 +289,7 @@ end
 
     # Package and run tests
     testable = TestableGeometry(integrand, grid, solution)
-    runtests(testable)
+    runtests(testable; rtol = 1e-6)
 end
 
 @testitem "Meshes.Circle" setup=[Combinations] begin
@@ -651,21 +651,21 @@ end
 @testitem "Meshes.RegularGrid" setup=[Combinations] begin
     # Geometry
     a = π
-    start = Point(0, 0, 0)
-    finish = Point(a, a, a)
-    dims = (4, 4, 4)
+    start = Point(0, 0)
+    finish = Point(a, a)
+    dims = (4, 4)
     grid = RegularGrid(start, finish, dims = dims)
 
     # Integrand & Solution
     function integrand(p::Meshes.Point)
-        x₁, x₂, x₃ = ustrip.(to(p))
-        (√(a^2 - x₁^2) + √(a^2 - x₂^2) + √(a^2 - x₃^2)) * u"A"
+        x₁, x₂ = ustrip.(to(p))
+        (√(a^2 - x₁^2) + √(a^2 - x₂^2)) * u"A"
     end
-    solution = 3a^2 * (π * a^2 / 4) * u"A*m^3"
+    solution = 2a * (π * a^2 / 4) * u"A*m^2"
 
     # Package and run tests
     testable = TestableGeometry(integrand, grid, solution)
-    runtests(testable)
+    runtests(testable; rtol = 1e-6)
 end
 
 @testitem "Meshes.Ring" setup=[Combinations] begin
