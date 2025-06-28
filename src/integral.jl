@@ -35,7 +35,7 @@ end
 function integral(
         f,
         domain::Meshes.Domain,
-        rule::I = Meshes.paramdim(geometry) == 1 ? GaussKronrod() : HAdaptiveCubature();
+        rule::I = Meshes.paramdim(domain) == 1 ? GaussKronrod() : HAdaptiveCubature();
         kwargs...
 ) where {I <: IntegrationRule}
     # Discretize the Domain into primitive geometries, sum the integrals over those
