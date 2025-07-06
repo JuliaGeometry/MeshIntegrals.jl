@@ -32,8 +32,9 @@ function integral(
         rule::I;
         kwargs...
 ) where {I <: IntegrationRule}
-    # Convert the Rope into Segments, sum the integrals of those
-    return sum(subarea -> integral(f, subarea, rule; kwargs...), Meshes.discretize(area))
+    # Partition the PolyArea, sum the integrals over each of those areas
+    subintegral(area) = integral(f, area, rule; kwargs...)
+    return sum(subintegral, Meshes.discretize(area))
 end
 
 """

@@ -33,5 +33,6 @@ function integral(
         kwargs...
 ) where {I <: IntegrationRule}
     # Convert the Rope into Segments, sum the integrals of those
-    return sum(segment -> integral(f, segment, rule; kwargs...), Meshes.segments(rope))
+    subintegral(segment) = integral(f, segment, rule; kwargs...)
+    return sum(subintegral, Meshes.segments(rope))
 end

@@ -33,5 +33,6 @@ function integral(
         kwargs...
 ) where {I <: IntegrationRule}
     # Convert the Ring into Segments, sum the integrals of those 
-    return sum(segment -> _integral(f, segment, rule; kwargs...), Meshes.segments(ring))
+    subintegral(segment) = _integral(f, segment, rule; kwargs...)
+    return sum(subintegral, Meshes.segments(ring))
 end
