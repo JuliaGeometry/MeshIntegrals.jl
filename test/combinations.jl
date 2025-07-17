@@ -592,6 +592,25 @@ end
     runtests(testable)
 end
 
+@testitem "Meshes.PolyArea" setup=[Combinations] begin
+    # Geometry
+    a, b, c = 0.4, 0.6, 1
+    outer = [(0, 0), (c, 0), (c, c), (0, c)]
+    hole = [(a, a), (b, a), (b, b), (a,b)]
+    area = PolyArea([outer, hole])
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point)
+        x, y = ustrip.(u"m", to(p))
+        2x * u"A"
+    end
+    solution = (c^2 - (b - a)*(b^2 - a^2)) * u"A*m^2"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, area, solution)
+    runtests(testable)
+end
+
 @testitem "Meshes.Pyramid" setup=[Combinations] begin
     if pkgversion(Meshes) >= v"0.52.12"
         # Geometry

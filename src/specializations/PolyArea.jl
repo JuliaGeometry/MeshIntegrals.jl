@@ -34,7 +34,8 @@ function integral(
 ) where {I <: IntegrationRule}
     # Partition the PolyArea, sum the integrals over each of those areas
     subintegral(area) = integral(f, area, rule; kwargs...)
-    return sum(subintegral, Meshes.discretize(area))
+    subgeometries = Meshes.elements(Meshes.discretize(area)) |> collect
+    return sum(subintegral, subgeometries)
 end
 
 """

@@ -40,7 +40,7 @@ function integral(
 ) where {I <: IntegrationRule}
     # Discretize the Domain into primitive geometries, sum the integrals over those
     subintegral(geometry) = _integral(f, geometry, rule; kwargs...)
-    subgeometries = Meshes.elements(Meshes.discretize(domain))
+    subgeometries = Meshes.elements(Meshes.discretize(domain)) |> collect
     return sum(subintegral, subgeometries)
 end
 
