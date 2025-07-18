@@ -596,7 +596,7 @@ end
     # Geometry
     a, b, c = 0.4, 0.6, 1
     outer = [(0, 0), (c, 0), (c, c), (0, c)]
-    hole = [(a, a), (b, a), (b, b), (a, b)]
+    hole = [(a, a), (a, b), (b, b), (b, a)]
     area = PolyArea([outer, hole])
 
     # Integrand & Solution
