@@ -1,6 +1,6 @@
 module MeshIntegralsEnzymeExt
 
-using MeshIntegrals: MeshIntegrals, AutoEnzyme
+using MeshIntegrals: MeshIntegrals, AutoEnzyme, GeometryOrDomain
 using Meshes: Meshes
 using Enzyme: Enzyme
 
