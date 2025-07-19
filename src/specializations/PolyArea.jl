@@ -2,8 +2,8 @@
 #                      Specialized Methods for PolyArea
 #
 # Why Specialized?
-#   The PolyArea geometry defines a surface bounded by a polygon but Meshes.jl
-#   can not define a parametric function for a polyarea because a general solution
+#   The PolyArea geometry defines a surface bounded by a polygon, but Meshes.jl
+#   cannot define a parametric function for a polyarea because a general solution
 #   for one does not exist. However, they can be partitioned into simpler elements
 #   and integrated separately before finally summing the result.
 ################################################################################
