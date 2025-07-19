@@ -25,7 +25,7 @@ function supports_autoenzyme end
 supports_autoenzyme(::Type{<:Any}) = false
 
 # If provided a geometry instance, re-run with the type as argument
-supports_autoenzyme(::G) where {G <: Meshes.GeometryOrDomain} = supports_autoenzyme(G)
+supports_autoenzyme(::G) where {G <: GeometryOrDomain} = supports_autoenzyme(G)
 
 """
     _check_diff_method_support(::Geometry, ::DifferentiationMethod) -> nothing
