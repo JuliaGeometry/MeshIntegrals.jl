@@ -26,7 +26,7 @@ The following Support Matrix captures the current state of support for all geome
 combinations. Entries with a green check mark are fully supported and pass unit tests
 designed to check for accuracy.
 
-| `Meshes.Geometry` | `GaussKronrod` | `GaussLegendre` | `HAdaptiveCubature` |
+| `Meshes.Geometry/Domain` | `GaussKronrod` | `GaussLegendre` | `HAdaptiveCubature` |
 |----------|----------------|---------------|---------------------|
 | `Ball` in `𝔼{2}` | ⚠️ | ✅ | ✅ |
 | `Ball` in `𝔼{3}` | 🛑 | ✅ | ✅ |
@@ -34,6 +34,7 @@ designed to check for accuracy.
 | `Box` in `𝔼{1}` | ✅ | ✅ | ✅ |
 | `Box` in `𝔼{2}` | ⚠️ | ✅ | ✅ |
 | `Box` in `𝔼{≥3}` | 🛑 | ✅ | ✅ |
+| `CartesianGrid` | ✅ | ✅ | ✅ |
 | `Circle` | ✅ | ✅ | ✅ |
 | `Cone` | 🛑 | ✅ | ✅ |
 | `ConeSurface` | ⚠️ | ✅ | ✅ |
@@ -48,14 +49,15 @@ designed to check for accuracy.
 | `ParaboloidSurface` | ⚠️ | ✅ | ✅ |
 | `ParametrizedCurve` | ✅ | ✅ | ✅ |
 | `Plane` | ✅ | ✅ | ✅ |
-| `Polyarea` | 🛑 | [🎗️](https://github.com/JuliaGeometry/MeshIntegrals.jl/issues/28) | [🎗️](https://github.com/JuliaGeometry/MeshIntegrals.jl/issues/28) |
+| `PolyArea` | ⚠️ | ✅ | ✅ |
 | `Pyramid` | ⚠️ | ✅ | ✅ |
 | `Quadrangle` | ⚠️ | ✅ | ✅ |
 | `Ray` | ✅ | ✅ | ✅ |
+| `RegularGrid` | ✅ | ✅ | ✅ |
 | `Ring` | ✅ | ✅ | ✅ |
 | `Rope` | ✅ | ✅ | ✅ |
 | `Segment` | ✅ | ✅ | ✅ |
-| `SimpleMesh` | 🛑 | [🎗️](https://github.com/JuliaGeometry/MeshIntegrals.jl/issues/27) | [🎗️](https://github.com/JuliaGeometry/MeshIntegrals.jl/issues/27) |
+| `SimpleMesh` | ⚠️ | ✅ | ✅ |
 | `Sphere` in `𝔼{2}` | ✅ | ✅ | ✅ |
 | `Sphere` in `𝔼{3}` | ⚠️ | ✅ | ✅ |
 | `Tetrahedron` | ⚠️ | ✅ | ✅ |

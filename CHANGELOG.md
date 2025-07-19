@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Adds integral methods for `PolyArea` and subtypes of `Domain` with explicit tests for `CartesianGrid`, `PolyArea`, `RegularGrid`, and `SimpleMesh`.
+
+### Changed
+
+- Generalizes the alias functions (e.g. `lineintegral`) to also accept `Domain`s.
+
+
+## [0.16.3] - 2025-06-26
+
+### Changed
+
+- Updated compatibility entry for [CoordRefSystems.jl](https://github.com/JuliaEarth/CoordRefSystems.jl) to support v0.17 and v0.18 ([#175](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/175), [#180](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/180)).
+
 
 ## [0.16.2] - 2025-03-16
 
