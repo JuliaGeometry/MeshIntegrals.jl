@@ -9,22 +9,11 @@
 ################################################################################
 
 """
-    integral(f, area::PolyArea, rule = HAdaptiveCubature();
-             diff_method=FiniteDifference(), FP=Float64)
+    integral(f, area::PolyArea, rule = HAdaptiveCubature(); kwargs...)
 
 Like [`integral`](@ref) but integrates over the surface domain defined by a `PolyArea`.
 The surface is first discretized into facets that are integrated independently using
 the specified integration `rule`.
-
-# Arguments
-- `f`: an integrand function, i.e. any callable with a method `f(::Meshes.Point)`
-- `area`: a `PolyArea` that defines the integration domain
-- `rule = HAdaptiveCubature()`: optionally, the `IntegrationRule` used for integration
-
-# Keyword Arguments
-- `diff_method::DifferentiationMethod`: the method to use for
-calculating Jacobians that are used to calculate differential elements
-- `FP = Float64`: the floating point precision desired
 """
 function integral(
         f,
