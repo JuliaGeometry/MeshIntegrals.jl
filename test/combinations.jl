@@ -810,7 +810,7 @@ end
     # Geometry
     a = π
     N = 3
-    side = range(0, a, length=N)
+    side = range(0, a, length = N)
     X = repeat(side, 1, N)
     Y = repeat(side', N, 1)
     grid = StructuredGrid(X, Y)
