@@ -13,20 +13,11 @@
 #                              integral
 ################################################################################
 """
-    integral(f, curve::BezierCurve, rule = GaussKronrod();
-             diff_method=Analytical(), FP=Float64, alg=Meshes.Horner())
+    integral(f, curve::BezierCurve[, rule = GaussKronrod()]; kwargs...)
 
 Like [`integral`](@ref) but integrates along the domain defined by `curve`.
 
-# Arguments
-- `f`: an integrand function, i.e. any callable with a method `f(::Meshes.Point)`
-- `curve`: a `Meshes.BezierCurve` that defines the integration domain
-- `rule = GaussKronrod()`: optionally, the `IntegrationRule` used for integration
-
-# Keyword Arguments
-- `diff_method::DifferentiationMethod = Analytical()`: the method to use for
-calculating Jacobians that are used to calculate differential elements
-- `FP = Float64`: the floating point precision desired
+# Special Keyword Arguments
 - `alg = Meshes.Horner()`:  the method to use for parametrizing `curve`. Alternatively,
 `alg=Meshes.DeCasteljau()` can be specified for increased accuracy, but comes with a
 steep performance cost, especially for curves with a large number of control points.

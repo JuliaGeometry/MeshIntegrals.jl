@@ -9,7 +9,7 @@
 ################################################################################
 
 """
-    integral(f, area::PolyArea, rule = HAdaptiveCubature(); kwargs...)
+    integral(f, area::PolyArea[, rule = HAdaptiveCubature()]; kwargs...)
 
 Like [`integral`](@ref) but integrates over the surface domain defined by a `PolyArea`.
 The surface is first discretized into facets that are integrated independently using

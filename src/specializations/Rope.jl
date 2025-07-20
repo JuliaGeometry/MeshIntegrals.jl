@@ -9,22 +9,11 @@
 ################################################################################
 
 """
-    integral(f, rope::Rope, rule = GaussKronrod();
-             diff_method=FiniteDifference(), FP=Float64)
+    integral(f, rope::Rope[, rule = GaussKronrod()]; kwargs...)
 
 Like [`integral`](@ref) but integrates along the domain defined by `rope`. The
 specified integration `rule` is applied independently to each segment formed by
 consecutive points in the Rope.
-
-# Arguments
-- `f`: an integrand function, i.e. any callable with a method `f(::Meshes.Point)`
-- `rope`: a `Rope` that defines the integration domain
-- `rule = GaussKronrod()`: optionally, the `IntegrationRule` used for integration
-
-# Keyword Arguments
-- `diff_method::DifferentiationMethod = FiniteDifference()`: the method to use for
-calculating Jacobians that are used to calculate differential elements
-- `FP = Float64`: the floating point precision desired
 """
 function integral(
         f,
