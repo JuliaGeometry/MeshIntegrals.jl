@@ -806,6 +806,27 @@ end
     runtests(testable)
 end
 
+@testitem "Meshes.StructuredGrid" setup=[Combinations] begin
+    # Geometry
+    a = π
+    N = 3
+    side = range(0, a, length=N)
+    X = repeat(side, 1, N)
+    Y = repeat(side', N, 1)
+    grid = StructuredGrid(X, Y)
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point)
+        x₁, x₂ = ustrip.(to(p))
+        (√(a^2 - x₁^2) + √(a^2 - x₂^2)) * u"A"
+    end
+    solution = 2a * (π * a^2 / 4) * u"A*m^2"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, grid, solution)
+    runtests(testable; rtol = 1e-6)
+end
+
 @testitem "Meshes.Tetrahedron" setup=[Combinations] begin
     # Geometry
     a = Point(0, 0, 0)

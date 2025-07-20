@@ -60,6 +60,7 @@ designed to check for accuracy.
 | `SimpleMesh` | ⚠️ | ✅ | ✅ |
 | `Sphere` in `𝔼{2}` | ✅ | ✅ | ✅ |
 | `Sphere` in `𝔼{3}` | ⚠️ | ✅ | ✅ |
+| `StructuredGrid` | ✅ | ✅ | ✅ |
 | `Tetrahedron` | ⚠️ | ✅ | ✅ |
 | `Triangle` | ✅ | ✅ | ✅ |
 | `Torus` | ⚠️ | ✅ | ✅ |
@@ -68,6 +69,5 @@ designed to check for accuracy.
 | Symbol | Support Level |
 |--------|---------|
 | ✅ | Supported |
-| 🎗️ | Planned to support in the future |
 | ⚠️ | Deprecated |
 | 🛑 | Not supported |

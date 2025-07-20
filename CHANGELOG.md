@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Adds integral methods for `PolyArea` and subtypes of `Domain` with explicit tests for `CartesianGrid`, `PolyArea`, `RegularGrid`, and `SimpleMesh`.
+- Adds integral methods for `PolyArea` and subtypes of `Domain` with explicit tests for `CartesianGrid`, `PolyArea`, `RegularGrid`, `SimpleMesh`, and `StructuredGrid`.
 
 ### Changed
 
