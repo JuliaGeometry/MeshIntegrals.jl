@@ -37,24 +37,3 @@ function integral(
     subgeometries = collect(Meshes.elements(Meshes.discretize(area)))
     return sum(subintegral, subgeometries)
 end
-
-"""
-    surfaceintegral(f, area, rule = HAdaptiveCubature(); FP = Float64)
-
-Numerically integrate a given function `f(::Point)` over the surface domain defined
-by a `PolyArea`. The surface is first discretized into facets that are integrated
-independently using the specified integration `rule`.
-
-Algorithm types available:
-- [`GaussKronrod`](@ref)
-- [`GaussLegendre`](@ref)
-- [`HAdaptiveCubature`](@ref) (default)
-"""
-function surfaceintegral(
-        f,
-        area::Meshes.PolyArea,
-        rule::IntegrationRule = HAdaptiveCubature();
-        kwargs...
-)
-    return integral(f, area, rule; kwargs...)
-end
