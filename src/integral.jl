@@ -3,7 +3,7 @@
 ################################################################################
 
 """
-    integral(f, geometry[, rule]; diff_method=_default_diff_method(geometry, FP), FP=Float64)
+    integral(f, geometry[, rule]; kwargs...)
 
 Numerically integrate a given function `f(::Point)` over the domain defined by
 a `geometry` using a particular numerical integration `rule` with floating point
@@ -11,25 +11,42 @@ precision of type `FP`.
 
 # Arguments
 - `f`: an integrand function, i.e. any callable with a method `f(::Meshes.Point)`
-- `geometry`: some `Meshes.Geometry` that defines the integration domain
+- `geometry`: a Meshes.jl `Geometry` or `Domain` that defines the integration domain
 - `rule`: optionally, the `IntegrationRule` used for integration (by default
 `GaussKronrod()` in 1D and `HAdaptiveCubature()` else)
 
 # Keyword Arguments
-- `diff_method::DifferentiationMethod = _default_diff_method(geometry, FP)`: the method to
-use for calculating Jacobians that are used to calculate differential elements
-- `FP = Float64`: the floating point precision desired.
+- `diff_method::DifferentiationMethod`: manually specifies the differentiation method use to
+calculate Jacobians within the integration domain.
+- `FP = Float64`: manually specifies the desired output floating point precision
 """
 function integral end
+
+# Default integration rule to use if unspecified
+function _default_rule(geometry)
+    ifelse(Meshes.paramdim(geometry) == 1, GaussKronrod(), HAdaptiveCubature())
+end
 
 # If only f and geometry are specified, select default rule
 function integral(
         f,
         geometry::Geometry,
-        rule::I = Meshes.paramdim(geometry) == 1 ? GaussKronrod() : HAdaptiveCubature();
+        rule::I = _default_rule(geometry);
         kwargs...
 ) where {I <: IntegrationRule}
     _integral(f, geometry, rule; kwargs...)
+end
+
+function integral(
+        f,
+        domain::Meshes.Domain,
+        rule::I = _default_rule(domain);
+        kwargs...
+) where {I <: IntegrationRule}
+    # Discretize the Domain into primitive geometries, sum the integrals over those
+    subintegral(geometry) = integral(f, geometry, rule; kwargs...)
+    subgeometries = collect(Meshes.elements(Meshes.discretize(domain)))
+    return sum(subintegral, subgeometries)
 end
 
 ################################################################################

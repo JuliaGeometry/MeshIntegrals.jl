@@ -15,10 +15,10 @@ This file includes tests for:
 
 @testsnippet Combinations begin
     using CoordRefSystems
-    using LinearAlgebra: norm
+    import LinearAlgebra: norm
     using Meshes
-    using MeshIntegrals
-    using Unitful
+    using MeshIntegrals: MeshIntegrals, GeometryOrDomain
+    import Unitful: @u_str, Quantity, ustrip
     import Enzyme
 
     # Used for testing callable objects as integrand functions
@@ -28,7 +28,7 @@ This file includes tests for:
     (c::Callable)(p::Meshes.Point) = c.f(p)
 
     # Stores a testable combination
-    struct TestableGeometry{F <: Function, G <: Geometry, U <: Unitful.Quantity}
+    struct TestableGeometry{F <: Function, G <: GeometryOrDomain, U <: Quantity}
         integrand::F
         geometry::G
         solution::U
@@ -49,7 +49,7 @@ This file includes tests for:
     end
 
     # Shortcut constructor for geometries with typical support structure
-    function SupportStatus(geometry::G;) where {G <: Geometry}
+    function SupportStatus(geometry::G) where {G <: GeometryOrDomain}
         # Check whether AutoEnzyme should be supported, i.e. not on blacklist
         unsupported_Gs = Union{BezierCurve, Cylinder, CylinderSurface, ParametrizedCurve}
         autoenzyme = !(G <: unsupported_Gs)
@@ -269,6 +269,26 @@ end
 
     # Package and run tests
     testable = TestableGeometry(integrand, box, solution)
+    runtests(testable; rtol = 1e-6)
+end
+
+@testitem "Meshes.CartesianGrid" setup=[Combinations] begin
+    # Geometry
+    a = π
+    start = Point(0, 0)
+    finish = Point(a, a)
+    dims = (4, 4)
+    grid = CartesianGrid(start, finish, dims = dims)
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point)
+        x₁, x₂ = ustrip.(to(p))
+        (√(a^2 - x₁^2) + √(a^2 - x₂^2)) * u"A"
+    end
+    solution = 2a * (π * a^2 / 4) * u"A*m^2"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, grid, solution)
     runtests(testable; rtol = 1e-6)
 end
 
@@ -572,6 +592,25 @@ end
     runtests(testable)
 end
 
+@testitem "Meshes.PolyArea" setup=[Combinations] begin
+    # Geometry
+    a, b, c = 0.4, 0.6, 1
+    outer = [(0, 0), (c, 0), (c, c), (0, c)]
+    hole = [(a, a), (a, b), (b, b), (b, a)]
+    area = PolyArea([outer, hole])
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point)
+        x, y = ustrip.(u"m", to(p))
+        2x * u"A"
+    end
+    solution = (c^2 - (b - a) * (b^2 - a^2)) * u"A*m^2"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, area, solution)
+    runtests(testable)
+end
+
 @testitem "Meshes.Pyramid" setup=[Combinations] begin
     if pkgversion(Meshes) >= v"0.52.12"
         # Geometry
@@ -628,6 +667,26 @@ end
     runtests(testable)
 end
 
+@testitem "Meshes.RegularGrid" setup=[Combinations] begin
+    # Geometry
+    a = π
+    start = Point(0, 0)
+    finish = Point(a, a)
+    dims = (4, 4)
+    grid = RegularGrid(start, finish, dims = dims)
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point)
+        x₁, x₂ = ustrip.(to(p))
+        (√(a^2 - x₁^2) + √(a^2 - x₂^2)) * u"A"
+    end
+    solution = 2a * (π * a^2 / 4) * u"A*m^2"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, grid, solution)
+    runtests(testable; rtol = 1e-6)
+end
+
 @testitem "Meshes.Ring" setup=[Combinations] begin
     # Geometry
     a = Point(0, 0, 0)
@@ -677,7 +736,7 @@ end
 
     # Integrand & Solution
     a, b = (7.1, 4.6)  # arbitrary constants > 0
-    function integrand(p::P; a = a, b = b) where {P <: Meshes.Point}
+    function integrand(p::Meshes.Point; a = a, b = b)
         r = ustrip(u"m", norm(to(p)))
         exp(r * log(a) + (1 - r) * log(b)) * u"A"
     end
@@ -686,6 +745,26 @@ end
     # Package and run tests
     testable = TestableGeometry(integrand, segment, solution)
     runtests(testable)
+end
+
+@testitem "Meshes.SimpleMesh" setup=[Combinations] begin
+    # Geometry
+    a = π
+    points = [(0, 0), (a, 0), (0, a), (a, a), (0.25a, 0.5a), (0.75a, 0.5a)]
+    tris = connect.([(1, 5, 3), (4, 6, 2)], Triangle)
+    quads = connect.([(1, 2, 6, 5), (4, 3, 5, 6)], Quadrangle)
+    mesh = SimpleMesh(points, [tris; quads])
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point; a = a)
+        x₁, x₂ = ustrip.((to(p)))
+        (√(a^2 - x₁^2) + √(a^2 - x₂^2)) * u"A"
+    end
+    solution = 2a * (π * a^2 / 4) * u"A*m^2"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, mesh, solution)
+    runtests(testable; rtol = 1e-6)
 end
 
 @testitem "Meshes.Sphere 2D" setup=[Combinations] begin
@@ -725,6 +804,27 @@ end
     # Package and run tests
     testable = TestableGeometry(integrand, sphere, solution)
     runtests(testable)
+end
+
+@testitem "Meshes.StructuredGrid" setup=[Combinations] begin
+    # Geometry
+    a = π
+    N = 3
+    side = range(0, a, length = N)
+    X = repeat(side, 1, N)
+    Y = repeat(side', N, 1)
+    grid = StructuredGrid(X, Y)
+
+    # Integrand & Solution
+    function integrand(p::Meshes.Point)
+        x₁, x₂ = ustrip.(to(p))
+        (√(a^2 - x₁^2) + √(a^2 - x₂^2)) * u"A"
+    end
+    solution = 2a * (π * a^2 / 4) * u"A*m^2"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, grid, solution)
+    runtests(testable; rtol = 1e-6)
 end
 
 @testitem "Meshes.Tetrahedron" setup=[Combinations] begin

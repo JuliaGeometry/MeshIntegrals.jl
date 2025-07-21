@@ -9,6 +9,9 @@ import LinearAlgebra
 import QuadGK
 import Unitful
 
+# Same as the internal-only Meshes.GeometryOrDomain
+const GeometryOrDomain = Union{Meshes.Geometry, Meshes.Domain}
+
 include("differentiation.jl")
 export DifferentiationMethod, FiniteDifference, AutoEnzyme, jacobian
 
@@ -31,6 +34,7 @@ include("specializations/CylinderSurface.jl")
 include("specializations/FrustumSurface.jl")
 include("specializations/Line.jl")
 include("specializations/Plane.jl")
+include("specializations/PolyArea.jl")
 include("specializations/Ray.jl")
 include("specializations/Ring.jl")
 include("specializations/Rope.jl")

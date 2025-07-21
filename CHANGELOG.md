@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Adds integral methods for `PolyArea` and subtypes of `Domain` with explicit tests for `CartesianGrid`, `PolyArea`, `RegularGrid`, `SimpleMesh`, and `StructuredGrid`.
+
+### Changed
+
+- Generalizes the alias functions (e.g. `lineintegral`) to also accept `Domain`s.
+- Updated docstrings to improve clarity and consistency.
+
+
 ## [0.16.3] - 2025-06-26
 
 ### Changed

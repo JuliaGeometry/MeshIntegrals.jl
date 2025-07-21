@@ -9,22 +9,11 @@
 ################################################################################
 
 """
-    integral(f, ring::Ring, rule = GaussKronrod();
-             diff_method=FiniteDifference(), FP=Float64)
+    integral(f, ring::Ring[, rule = GaussKronrod()]; kwargs...)
 
 Like [`integral`](@ref) but integrates along the domain defined by `ring`. The
 specified integration `rule` is applied independently to each segment formed by
 consecutive points in the Ring.
-
-# Arguments
-- `f`: an integrand function, i.e. any callable with a method `f(::Meshes.Point)`
-- `ring`: a `Ring` that defines the integration domain
-- `rule = GaussKronrod()`: optionally, the `IntegrationRule` used for integration
-
-# Keyword Arguments
-- `diff_method::DifferentiationMethod = FiniteDifference()`: the method to use for
-calculating Jacobians that are used to calculate differential elements
-- `FP = Float64`: the floating point precision desired
 """
 function integral(
         f,
@@ -33,5 +22,6 @@ function integral(
         kwargs...
 ) where {I <: IntegrationRule}
     # Convert the Ring into Segments, sum the integrals of those 
-    return sum(segment -> _integral(f, segment, rule; kwargs...), Meshes.segments(ring))
+    subintegral(segment) = _integral(f, segment, rule; kwargs...)
+    return sum(subintegral, Meshes.segments(ring))
 end

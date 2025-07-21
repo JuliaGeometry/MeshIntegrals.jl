@@ -14,7 +14,7 @@ end
 
 """
     supports_autoenzyme(geometry::Geometry)
-    supports_autoenzyme(type::Type{<:Geometry})
+    supports_autoenzyme(type::Type{<:GeometryOrDomain})
 
 Return whether a geometry or geometry type has a parametric function that can be
 differentiated with Enzyme. See GitHub Issue #154 for more information.
@@ -25,7 +25,7 @@ function supports_autoenzyme end
 supports_autoenzyme(::Type{<:Any}) = false
 
 # If provided a geometry instance, re-run with the type as argument
-supports_autoenzyme(::G) where {G <: Geometry} = supports_autoenzyme(G)
+supports_autoenzyme(::G) where {G <: GeometryOrDomain} = supports_autoenzyme(G)
 
 """
     _check_diff_method_support(::Geometry, ::DifferentiationMethod) -> nothing

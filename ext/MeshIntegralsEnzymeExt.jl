@@ -1,13 +1,13 @@
 module MeshIntegralsEnzymeExt
 
-using MeshIntegrals: MeshIntegrals, AutoEnzyme
-using Meshes: Meshes
-using Enzyme: Enzyme
+import MeshIntegrals
+import Meshes
+import Enzyme
 
 function MeshIntegrals.jacobian(
         geometry::Meshes.Geometry,
         ts::Union{AbstractVector{T}, Tuple{T, Vararg{T}}},
-        ::AutoEnzyme
+        ::MeshIntegrals.AutoEnzyme
 ) where {T <: AbstractFloat}
     Dim = Meshes.paramdim(geometry)
     if Dim != length(ts)
@@ -16,9 +16,10 @@ function MeshIntegrals.jacobian(
     return Meshes.to.(Enzyme.jacobian(Enzyme.Forward, geometry, ts...))
 end
 
-# Supports all geometries except for those that throw errors
-# See GitHub Issue #154 for more information
+# Supports all geometries/domains by default
 MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.Geometry}) = true
+MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.Domain}) = true
+# except for those that throw errors (see GitHub Issue #154)
 MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.BezierCurve}) = false
 MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.CylinderSurface}) = false
 MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.Cylinder}) = false

@@ -9,6 +9,9 @@ Numerically integrate a given function `f(::Point)` along a line-like `geometry`
 using a particular numerical integration `rule` with floating point precision of
 type `FP`.
 
+This is a convenience wrapper around [`integral`](@ref) that additionally enforces
+a requirement that the geometry have one parametric dimension.
+
 Rule types available:
 - [`GaussKronrod`](@ref) (default)
 - [`GaussLegendre`](@ref)
@@ -16,18 +19,16 @@ Rule types available:
 """
 function lineintegral(
         f,
-        geometry::Geometry,
+        geometry::GeometryOrDomain,
         rule::IntegrationRule = GaussKronrod();
         kwargs...
 )
-    N = Meshes.paramdim(geometry)
-
-    if N == 1
-        return integral(f, geometry, rule; kwargs...)
-    else
+    if (N = Meshes.paramdim(geometry)) != 1
         throw(ArgumentError("Performing a line integral on a geometry \
                             with $N parametric dimensions not supported."))
     end
+
+    return integral(f, geometry, rule; kwargs...)
 end
 
 ################################################################################
@@ -41,6 +42,9 @@ Numerically integrate a given function `f(::Point)` along a surface `geometry`
 using a particular numerical integration `rule` with floating point precision of
 type `FP`.
 
+This is a convenience wrapper around [`integral`](@ref) that additionally enforces
+a requirement that the geometry have two parametric dimensions.
+
 Algorithm types available:
 - [`GaussKronrod`](@ref)
 - [`GaussLegendre`](@ref)
@@ -48,18 +52,16 @@ Algorithm types available:
 """
 function surfaceintegral(
         f,
-        geometry::Geometry,
+        geometry::GeometryOrDomain,
         rule::IntegrationRule = HAdaptiveCubature();
         kwargs...
 )
-    N = Meshes.paramdim(geometry)
-
-    if N == 2
-        return integral(f, geometry, rule; kwargs...)
-    else
+    if (N = Meshes.paramdim(geometry)) != 2
         throw(ArgumentError("Performing a surface integral on a geometry \
                             with $N parametric dimensions not supported."))
     end
+
+    return integral(f, geometry, rule; kwargs...)
 end
 
 ################################################################################
@@ -73,6 +75,9 @@ Numerically integrate a given function `f(::Point)` throughout a volumetric
 `geometry` using a particular numerical integration `rule` with floating point
 precision of type `FP`.
 
+This is a convenience wrapper around [`integral`](@ref) that additionally enforces
+a requirement that the geometry have three parametric dimensions.
+
 Algorithm types available:
 - [`GaussKronrod`](@ref)
 - [`GaussLegendre`](@ref)
@@ -80,16 +85,14 @@ Algorithm types available:
 """
 function volumeintegral(
         f,
-        geometry::Geometry,
+        geometry::GeometryOrDomain,
         rule::IntegrationRule = HAdaptiveCubature();
         kwargs...
 )
-    N = Meshes.paramdim(geometry)
-
-    if N == 3
-        return integral(f, geometry, rule; kwargs...)
-    else
+    if (N = Meshes.paramdim(geometry)) != 3
         throw(ArgumentError("Performing a volume integral on a geometry \
                             with $N parametric dimensions not supported."))
     end
+
+    return integral(f, geometry, rule; kwargs...)
 end
