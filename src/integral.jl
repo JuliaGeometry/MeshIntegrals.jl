@@ -11,7 +11,7 @@ precision of type `FP`.
 
 # Arguments
 - `f`: an integrand function, i.e. any callable with a method `f(::Meshes.Point)`
-- `geometry`: a Meshes `Geometry` or `Domain` that defines the integration domain
+- `geometry`: a Meshes.jl `Geometry` or `Domain` that defines the integration domain
 - `rule`: optionally, the `IntegrationRule` used for integration (by default
 `GaussKronrod()` in 1D and `HAdaptiveCubature()` else)
 
@@ -23,13 +23,13 @@ calculate Jacobians within the integration domain.
 function integral end
 
 # Default integration rule to use if unspecified
-_defrule(geometry) = (Meshes.paramdim(geometry) == 1) ? GaussKronrod() : HAdaptiveCubature()
+_default_rule(geometry) = (Meshes.paramdim(geometry) == 1) ? GaussKronrod() : HAdaptiveCubature()
 
 # If only f and geometry are specified, select default rule
 function integral(
         f,
         geometry::Geometry,
-        rule::I = _defrule(geometry);
+        rule::I = _default_rule(geometry);
         kwargs...
 ) where {I <: IntegrationRule}
     _integral(f, geometry, rule; kwargs...)
@@ -38,7 +38,7 @@ end
 function integral(
         f,
         domain::Meshes.Domain,
-        rule::I = _defrule(domain);
+        rule::I = _default_rule(domain);
         kwargs...
 ) where {I <: IntegrationRule}
     # Discretize the Domain into primitive geometries, sum the integrals over those
