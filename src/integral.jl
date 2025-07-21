@@ -23,7 +23,9 @@ calculate Jacobians within the integration domain.
 function integral end
 
 # Default integration rule to use if unspecified
-_default_rule(geometry) = (Meshes.paramdim(geometry) == 1) ? GaussKronrod() : HAdaptiveCubature()
+function _default_rule(geometry)
+    ifelse(Meshes.paramdim(geometry) == 1, GaussKronrod(), HAdaptiveCubature())
+end
 
 # If only f and geometry are specified, select default rule
 function integral(
