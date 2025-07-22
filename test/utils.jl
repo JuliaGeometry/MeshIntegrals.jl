@@ -56,6 +56,10 @@ end
     box = Box(Point(0, 0), Point(1, 1))
     @test_throws ArgumentError jacobian(box, zeros(3), FiniteDifference())
     @test_throws ArgumentError jacobian(box, zeros(3), AutoEnzyme())
+
+    # Check currency of supports_autoenzyme status
+    curve = BezierCurve([Point(t, 0) for t in range(-π, π, length = 361)])
+    @test_throws "readonly" MeshIntegrals.jacobian(curve, (0.5,), AutoEnzyme())
 end
 
 @testitem "_ParametricGeometry" setup=[Utils] begin
