@@ -29,6 +29,14 @@ end
     # supports_autoenzyme(::Type{<:Any})
     @test MeshIntegrals.supports_autoenzyme(Nothing) == false
 
+    # Check currency of supports_autoenzyme status
+    curve = BezierCurve([Point(t, 0) for t in range(-π, π, length = 361)])
+    @test_throws "proven readonly" jacobian(curve, (0.5,), AutoEnzyme())
+    cyl = Cylinder(Point(0, 0, 0), Point(0, 0, 1), 2.0)
+    @test_throws "jl_get_builtin_fptr" jacobian(cyl, (0.5, 0.5, 0.5), AutoEnzyme())
+    cylsurf = CylinderSurface(Point(0, 0, 0), Point(0, 0, 1), 2.0)
+    @test_throws "jl_get_builtin_fptr" jacobian(cylsurf, (0.5, 0.5), AutoEnzyme())
+
     # _default_diff_method -- using type or instance, Enzyme-supported combination
     let sphere = Sphere(Point(0, 0, 0), 1.0)
         @test _default_diff_method(Meshes.Sphere, Float64) isa AutoEnzyme
@@ -56,10 +64,6 @@ end
     box = Box(Point(0, 0), Point(1, 1))
     @test_throws ArgumentError jacobian(box, zeros(3), FiniteDifference())
     @test_throws ArgumentError jacobian(box, zeros(3), AutoEnzyme())
-
-    # Check currency of supports_autoenzyme status
-    curve = BezierCurve([Point(t, 0) for t in range(-π, π, length = 361)])
-    @test_throws "readonly" MeshIntegrals.jacobian(curve, (0.5,), AutoEnzyme())
 end
 
 @testitem "_ParametricGeometry" setup=[Utils] begin
