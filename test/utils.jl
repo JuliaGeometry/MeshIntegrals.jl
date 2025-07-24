@@ -7,6 +7,14 @@
     import Enzyme
 end
 
+@testitem "Integration Rules" begin
+    @test sprint(show, GaussKronrod(; atol = 1e-12, rtol = 1e-10)) ==
+          "GaussKronrod(; atol = 1.0e-12, rtol = 1.0e-10)"
+
+    @test sprint(show, GaussLegendre(5)) == "GaussLegendre(5)"
+    @test sprint(show, HAdaptiveCubature()) == "HAdaptiveCubature(; )"
+end
+
 @testitem "Utilities" setup=[Utils] begin
     # _KVector
     v = Meshes.Vec(3, 4)
