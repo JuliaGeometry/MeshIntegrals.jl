@@ -2,6 +2,10 @@
 #                           Integration Rules
 ################################################################################
 
+function _kwargs_to_string(kwargs)
+    return join([string(k) * " = " * string(v) for (k, v) in pairs(kwargs)], ", ")
+end
+
 abstract type IntegrationRule end
 
 """
@@ -16,6 +20,10 @@ supported using nested integral solvers with the specified `kwarg` settings.
 struct GaussKronrod <: IntegrationRule
     kwargs::Base.Pairs
     GaussKronrod(; kwargs...) = new(kwargs)
+end
+
+function Base.show(io::IO, rule::GaussKronrod)
+    print(io, "GaussKronrod(; ", _kwargs_to_string(rule.kwargs), ")")
 end
 
 """
@@ -39,6 +47,10 @@ struct GaussLegendre <: IntegrationRule
     GaussLegendre(n::Int64) = new(n, FastGaussQuadrature.gausslegendre(n)...)
 end
 
+function Base.show(io::IO, rule::GaussLegendre)
+    print(io, "GaussLegendre(", rule.n, ")")
+end
+
 """
     HAdaptiveCubature(kwargs...)
 
@@ -49,4 +61,8 @@ The h-adaptive cubature rule implemented by
 struct HAdaptiveCubature <: IntegrationRule
     kwargs::Base.Pairs
     HAdaptiveCubature(; kwargs...) = new(kwargs)
+end
+
+function Base.show(io::IO, rule::HAdaptiveCubature)
+    print(io, "HAdaptiveCubature(; ", _kwargs_to_string(rule.kwargs), ")")
 end
