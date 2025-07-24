@@ -2,6 +2,10 @@
 #                           Integration Rules
 ################################################################################
 
+function _kwargs_to_string(kwargs)
+    return join([string(k) * " = " * string(v) for (k, v) in pairs(kwargs)], ", ")
+end
+
 abstract type IntegrationRule end
 
 """
@@ -19,8 +23,7 @@ struct GaussKronrod <: IntegrationRule
 end
 
 function Base.show(io::IO, rule::GaussKronrod)
-    print(io, "GaussKronrod(; ",
-        join([string(k) * " = " * string(v) for (k, v) in pairs(rule.kwargs)], ", "), ")")
+    print(io, "GaussKronrod(; ", _kwargs_to_string(rule.kwargs), ")")
 end
 
 """
@@ -61,6 +64,5 @@ struct HAdaptiveCubature <: IntegrationRule
 end
 
 function Base.show(io::IO, rule::HAdaptiveCubature)
-    print(io, "HAdaptiveCubature(; ",
-        join([string(k) * " = " * string(v) for (k, v) in pairs(rule.kwargs)], ", "), ")")
+    print(io, "HAdaptiveCubature(; ", _kwargs_to_string(rule.kwargs), ")")
 end
