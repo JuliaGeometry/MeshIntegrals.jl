@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Generalizes the alias functions (e.g. `lineintegral`) to also accept `Domain`s.
 - Updated docstrings to improve clarity and consistency.
+- Improved unit testing for `AutoEnzyme` support.
 
 
 ## [0.16.3] - 2025-06-26
