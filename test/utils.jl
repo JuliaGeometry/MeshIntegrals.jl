@@ -26,32 +26,34 @@ end
 end
 
 @testitem "Differentiation (EnzymeExt loaded)" setup=[Utils] begin
-    # supports_autoenzyme(::Type{<:Any})
-    @test MeshIntegrals.supports_autoenzyme(Nothing) == false
-
-    # Check currency of supports_autoenzyme status
-    curve = BezierCurve([Point(t, 0) for t in range(-π, π, length = 361)])
-    @test_throws "proven readonly" jacobian(curve, (0.5,), AutoEnzyme())
-    cyl = Cylinder(Point(0, 0, 0), Point(0, 0, 1), 2.0)
-    @test_throws "jl_get_builtin_fptr" jacobian(cyl, (0.5, 0.5, 0.5), AutoEnzyme())
-    cylsurf = CylinderSurface(Point(0, 0, 0), Point(0, 0, 1), 2.0)
-    @test_throws "jl_get_builtin_fptr" jacobian(cylsurf, (0.5, 0.5), AutoEnzyme())
-
-    # _default_diff_method -- using type or instance, Enzyme-supported combination
+    # supports_autoenzyme & _default_diff_method
+    # Nominal usage: Enzyme-supported geometry and FP type
     let sphere = Sphere(Point(0, 0, 0), 1.0)
         @test _default_diff_method(Meshes.Sphere, Float64) isa AutoEnzyme
         @test _default_diff_method(sphere, Float64) isa AutoEnzyme
     end
-
-    # _default_diff_method -- Enzyme-unsupported FP types
+    # supports_autoenzyme(::Type{<:Any}) for CI completeness
+    @test MeshIntegrals.supports_autoenzyme(Nothing) == false
+    # BezierCurve: blocked by upstream Meshes-Enzyme incompatibility
+    let curve = BezierCurve([Point(t, 0) for t in range(-π, π, length = 361)])
+        @test_throws "proven readonly" jacobian(curve, (0.5,), AutoEnzyme())
+        @test _default_diff_method(Meshes.BezierCurve, Float64) isa FiniteDifference
+    end
+    # Cylinder: blocked by upstream Meshes-Enzyme incompatibility
+    let cyl = Cylinder(Point(0, 0, 0), Point(0, 0, 1), 2.0)
+        @test_throws "jl_get_builtin_fptr" jacobian(cyl, (0.5, 0.5, 0.5), AutoEnzyme())
+        @test _default_diff_method(Meshes.Cylinder, Float64) isa FiniteDifference
+    end
+    # CylinderSurface: blocked by upstream Meshes-Enzyme incompatibility
+    let cylsurf = CylinderSurface(Point(0, 0, 0), Point(0, 0, 1), 2.0)
+        @test_throws "jl_get_builtin_fptr" jacobian(cylsurf, (0.5, 0.5), AutoEnzyme())
+        @test _default_diff_method(Meshes.CylinderSurface, Float64) isa FiniteDifference
+    end
+    # ParametrizedCurve: no default AD since user-defined functions
+    @test _default_diff_method(Meshes.ParametrizedCurve, Float64) isa FiniteDifference
+    # Non-Float64: other FP types not supported by Enzyme
     @test _default_diff_method(Meshes.Sphere, Float16) isa FiniteDifference
     @test _default_diff_method(Meshes.Sphere, BigFloat) isa FiniteDifference
-
-    # _default_diff_method -- geometries that currently error with AutoEnzyme
-    @test _default_diff_method(Meshes.BezierCurve, Float64) isa FiniteDifference
-    @test _default_diff_method(Meshes.CylinderSurface, Float64) isa FiniteDifference
-    @test _default_diff_method(Meshes.Cylinder, Float64) isa FiniteDifference
-    @test _default_diff_method(Meshes.ParametrizedCurve, Float64) isa FiniteDifference
 
     # FiniteDifference
     @test FiniteDifference().ε ≈ 1e-6

@@ -21,8 +21,8 @@ MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.Geometry}) = true
 MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.Domain}) = true
 # except for those that throw errors (see GitHub Issue #154)
 MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.BezierCurve}) = false
-MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.CylinderSurface}) = false
 MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.Cylinder}) = false
+MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.CylinderSurface}) = false
 MeshIntegrals.supports_autoenzyme(::Type{<:Meshes.ParametrizedCurve}) = false
 
 end
