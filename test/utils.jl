@@ -5,6 +5,9 @@
     using MeshIntegrals: _default_diff_method, _parametric, _units, _zeros, _ones
     using Unitful
     import Enzyme
+
+    import Pkg
+    println("Enzyme: " * string(Pkg.dependencies()[Base.PkgId(Enzyme).uuid].version))
 end
 
 @testitem "Utilities" setup=[Utils] begin
