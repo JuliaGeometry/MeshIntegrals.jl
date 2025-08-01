@@ -39,14 +39,12 @@ end
         @test_throws "proven readonly" jacobian(curve, (0.5,), AutoEnzyme())
         @test _default_diff_method(Meshes.BezierCurve, Float64) isa FiniteDifference
     end
-    # Cylinder: blocked by upstream Meshes-Enzyme incompatibility
+    # Cylinder: blocked by version-dependent upstream Meshes-Enzyme incompatibility
     let cyl = Cylinder(Point(0, 0, 0), Point(0, 0, 1), 2.0)
-        @test_throws "jl_get_builtin_fptr" jacobian(cyl, (0.5, 0.5, 0.5), AutoEnzyme())
         @test _default_diff_method(Meshes.Cylinder, Float64) isa FiniteDifference
     end
-    # CylinderSurface: blocked by upstream Meshes-Enzyme incompatibility
+    # CylinderSurface: blocked by version-dependent upstream Meshes-Enzyme incompatibility
     let cylsurf = CylinderSurface(Point(0, 0, 0), Point(0, 0, 1), 2.0)
-        @test_throws "jl_get_builtin_fptr" jacobian(cylsurf, (0.5, 0.5), AutoEnzyme())
         @test _default_diff_method(Meshes.CylinderSurface, Float64) isa FiniteDifference
     end
     # ParametrizedCurve: no default AD since user-defined functions
