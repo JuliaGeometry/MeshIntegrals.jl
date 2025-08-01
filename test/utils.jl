@@ -7,7 +7,9 @@
     import Enzyme
 
     import Pkg
-    println("Enzyme: " * string(Pkg.dependencies()[Base.PkgId(Enzyme).uuid].version))
+    println("julia: " * string(VERSION))
+    println("Enzyme.jl: " * string(Pkg.dependencies()[Base.PkgId(Enzyme).uuid].version))
+    println("Meshes.jl: " * string(Pkg.dependencies()[Base.PkgId(Meshes).uuid].version))
 end
 
 @testitem "Utilities" setup=[Utils] begin
