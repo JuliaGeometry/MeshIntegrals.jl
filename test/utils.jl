@@ -59,7 +59,7 @@ end
     # FiniteDifference
     let diff = FiniteDifference()
         @test typeof(diff.ε) == Float64
-        @test diff.ε  ≈ 1e-6
+        @test diff.ε ≈ 1e-6
     end
 
     # Two-argument jacobian
