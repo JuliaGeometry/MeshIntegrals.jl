@@ -15,7 +15,6 @@ end
 
     # _units
     let p = Point(1.0u"cm", 2.0u"mm", 3.0u"m")
-        
         @test _units(p) == u"m"
     end
 
