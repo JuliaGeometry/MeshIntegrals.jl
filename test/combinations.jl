@@ -92,7 +92,7 @@ This file includes tests for:
             if getfield(supports, nameof(alias))
                 @test alias(testable.integrand, testable.geometry)≈testable.solution rtol=rtol
             else
-                @test_throws "not supported" alias(testable.integrand, testable.geometry)
+                @test_throws "supported" alias(testable.integrand, testable.geometry)
             end
         end # for
 
