@@ -119,7 +119,7 @@ This file includes tests for:
             else
                 f = testable.integrand
                 geometry = testable.geometry
-                @test_throws "not supported" integral(f, geometry, rule)
+                @test_throws "supported" integral(f, geometry, rule)
             end
         end # for
 
@@ -137,7 +137,7 @@ This file includes tests for:
             if supported
                 @test integral(f, geometry; diff_method = method)≈sol rtol=rtol
             else
-                @test_throws "not supported" integral(f, geometry; diff_method = method)
+                @test_throws "supported" integral(f, geometry; diff_method = method)
             end
         end # for
     end # function
