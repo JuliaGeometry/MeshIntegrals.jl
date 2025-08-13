@@ -58,5 +58,4 @@ designed to check for accuracy.
 | Symbol | Support Level |
 |--------|---------|
 | ✅ | Supported |
-| 🛑 | Deprecated |
 | 🛑 | Not supported |
