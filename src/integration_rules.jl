@@ -12,10 +12,9 @@ abstract type IntegrationRule end
     GaussKronrod(kwargs...)
 
 The h-adaptive Gauss-Kronrod quadrature rule implemented by
-[QuadGK.jl](https://github.com/JuliaMath/QuadGK.jl). All standard
-`QuadGK.quadgk` keyword arguments are supported. This rule works natively for one
-dimensional geometries; some two- and three-dimensional geometries are additionally
-supported using nested integral solvers with the specified `kwarg` settings.
+[QuadGK.jl](https://github.com/JuliaMath/QuadGK.jl) which can be used for any
+single-dimensional geometry. All standard `QuadGK.quadgk` keyword arguments are
+supported.
 """
 struct GaussKronrod <: IntegrationRule
     kwargs::Base.Pairs
