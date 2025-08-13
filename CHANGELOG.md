@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- Removed previously-deprecated support for use of `GaussKronrod` rules on geometries with more than one parametric dimension.
+
 
 ## [0.16.4] - 2025-08-10
 
