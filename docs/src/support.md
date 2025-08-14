@@ -23,35 +23,37 @@ designed to check for accuracy.
 | `Box` in `𝔼{1}` | ✅ | ✅ | ✅ |
 | `Box` in `𝔼{2}` | 🛑 | ✅ | ✅ |
 | `Box` in `𝔼{≥3}` | 🛑 | ✅ | ✅ |
-| `CartesianGrid` | ✅ | ✅ | ✅ |
+| `CartesianGrid` in `𝔼{1}` | ✅ | ✅ | ✅ |
+| `CartesianGrid` in `𝔼{≥2}` | 🛑 | ✅ | ✅ |
 | `Circle` | ✅ | ✅ | ✅ |
 | `Cone` | 🛑 | ✅ | ✅ |
 | `ConeSurface` | 🛑 | ✅ | ✅ |
 | `Cylinder` | 🛑 | ✅ | ✅ |
 | `CylinderSurface` | 🛑 | ✅ | ✅ |
 | `Disk` | 🛑 | ✅ | ✅ |
-| `Ellipsoid` | ✅ | ✅ | ✅ |
+| `Ellipsoid` | 🛑 | ✅ | ✅ |
 | `Frustum` | 🛑 | ✅ | ✅ |
 | `FrustumSurface` | 🛑 | ✅ | ✅ |
-| `Hexahedron` | ✅ | ✅ | ✅ |
+| `Hexahedron` | 🛑 | ✅ | ✅ |
 | `Line` | ✅ | ✅ | ✅ |
 | `ParaboloidSurface` | 🛑 | ✅ | ✅ |
 | `ParametrizedCurve` | ✅ | ✅ | ✅ |
-| `Plane` | ✅ | ✅ | ✅ |
+| `Plane` | 🛑 | ✅ | ✅ |
 | `PolyArea` | 🛑 | ✅ | ✅ |
 | `Pyramid` | 🛑 | ✅ | ✅ |
 | `Quadrangle` | 🛑 | ✅ | ✅ |
 | `Ray` | ✅ | ✅ | ✅ |
-| `RegularGrid` | ✅ | ✅ | ✅ |
+| `RegularGrid` in `𝔼{1}` | ✅ | ✅ | ✅ |
+| `RegularGrid` in `𝔼{≥2}` | 🛑 | ✅ | ✅ |
 | `Ring` | ✅ | ✅ | ✅ |
 | `Rope` | ✅ | ✅ | ✅ |
 | `Segment` | ✅ | ✅ | ✅ |
 | `SimpleMesh` | 🛑 | ✅ | ✅ |
-| `Sphere` in `𝔼{2}` | ✅ | ✅ | ✅ |
-| `Sphere` in `𝔼{3}` | 🛑 | ✅ | ✅ |
-| `StructuredGrid` | ✅ | ✅ | ✅ |
+| `Sphere` | 🛑 | ✅ | ✅ |
+| `StructuredGrid` in `𝔼{1}` | ✅ | ✅ | ✅ |
+| `StructuredGrid` in `𝔼{≥2}` | 🛑 | ✅ | ✅ |
 | `Tetrahedron` | 🛑 | ✅ | ✅ |
-| `Triangle` | ✅ | ✅ | ✅ |
+| `Triangle` | 🛑 | ✅ | ✅ |
 | `Torus` | 🛑 | ✅ | ✅ |
 | `Wedge` | 🛑 | ✅ | ✅ |
 
