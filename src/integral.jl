@@ -65,7 +65,7 @@ function _integral(
 
     # Only supported for 1D geometries
     if Meshes.paramdim(geometry) != 1
-        msg = "GaussKronrod rules only supported in one parametric dimension."
+        msg = "GaussKronrod rules not supported in more than one parametric dimension."
         throw(ArgumentError(msg))
     end
 
