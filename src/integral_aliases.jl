@@ -1,3 +1,7 @@
+function _alias_error_msg(name, N)
+    "Performing a $name integral on a geometry with $N parametric dimensions not supported."
+end
+
 ################################################################################
 #                              Line Integral
 ################################################################################
@@ -24,8 +28,7 @@ function lineintegral(
         kwargs...
 )
     if (N = Meshes.paramdim(geometry)) != 1
-        throw(ArgumentError("Performing a line integral on a geometry \
-                            with $N parametric dimensions not supported."))
+        throw(ArgumentError(_alias_error_msg("line", N)))
     end
 
     return integral(f, geometry, rule; kwargs...)
@@ -57,8 +60,7 @@ function surfaceintegral(
         kwargs...
 )
     if (N = Meshes.paramdim(geometry)) != 2
-        throw(ArgumentError("Performing a surface integral on a geometry \
-                            with $N parametric dimensions not supported."))
+        throw(ArgumentError(_alias_error_msg("surface", N)))
     end
 
     return integral(f, geometry, rule; kwargs...)
@@ -90,8 +92,7 @@ function volumeintegral(
         kwargs...
 )
     if (N = Meshes.paramdim(geometry)) != 3
-        throw(ArgumentError("Performing a volume integral on a geometry \
-                            with $N parametric dimensions not supported."))
+        throw(ArgumentError(_alias_error_msg("volume", N)))
     end
 
     return integral(f, geometry, rule; kwargs...)
