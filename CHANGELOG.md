@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Increased minimum dependency version for Meshes.jl to `v0.52.12` and CoordRefSystems.jl to `0.16` to natively support some new geometry types.
+
 ### Removed
 
 - Removed previously-deprecated support for use of `GaussKronrod` rules on geometries with more than one parametric dimension.

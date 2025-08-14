@@ -443,28 +443,26 @@ end
 end
 
 @testitem "Meshes.Frustum" setup=[Combinations] begin
-    if pkgversion(Meshes) >= v"0.52.12"
-        # Geometry
-        r = 2.5u"m"
-        h = 3.5u"m"
-        origin = Point(0, 0, 0)
-        midpoint = Point(0.0u"m", 0.0u"m", 0.5 * h)
-        apex = Point(0.0u"m", 0.0u"m", h)
-        ẑ = Vec(0, 0, 1)
-        xy_plane = Plane(origin, ẑ)
-        base = Disk(xy_plane, r)
-        mid_plane = Plane(midpoint, ẑ)
-        mid_disk = Disk(mid_plane, 0.5 * r)
-        frustum = Frustum(base, mid_disk)
+    # Geometry
+    r = 2.5u"m"
+    h = 3.5u"m"
+    origin = Point(0, 0, 0)
+    midpoint = Point(0.0u"m", 0.0u"m", 0.5 * h)
+    apex = Point(0.0u"m", 0.0u"m", h)
+    ẑ = Vec(0, 0, 1)
+    xy_plane = Plane(origin, ẑ)
+    base = Disk(xy_plane, r)
+    mid_plane = Plane(midpoint, ẑ)
+    mid_disk = Disk(mid_plane, 0.5 * r)
+    frustum = Frustum(base, mid_disk)
 
-        # Integrand & Solution
-        integrand(p) = 1.0u"A"
-        solution = (7 // 8) * (π * r^2 * h / 3) * u"A"
+    # Integrand & Solution
+    integrand(p) = 1.0u"A"
+    solution = (7 // 8) * (π * r^2 * h / 3) * u"A"
 
-        # Package and run tests
-        testable = TestableGeometry(integrand, frustum, solution)
-        runtests(testable)
-    end
+    # Package and run tests
+    testable = TestableGeometry(integrand, frustum, solution)
+    runtests(testable)
 end
 
 @testitem "Meshes.FrustumSurface" setup=[Combinations] begin
@@ -612,23 +610,21 @@ end
 end
 
 @testitem "Meshes.Pyramid" setup=[Combinations] begin
-    if pkgversion(Meshes) >= v"0.52.12"
-        # Geometry
-        a = Point(-1, -1, 0)
-        b = Point(1, -1, 0)
-        c = Point(1, 1, 0)
-        d = Point(-1, 1, 0)
-        apex = Point(0, 0, 1)
-        pyramid = Pyramid(a, b, c, d, apex)
-        # Integrand & Solution
-        integrand(p) = 1.0u"A"
-        w = norm(b - a)
-        h = norm(d - a)
-        solution = (1 // 3) * w * h * u"A*m"
-        # Package and run tests
-        testable = TestableGeometry(integrand, pyramid, solution)
-        runtests(testable)
-    end
+    # Geometry
+    a = Point(-1, -1, 0)
+    b = Point(1, -1, 0)
+    c = Point(1, 1, 0)
+    d = Point(-1, 1, 0)
+    apex = Point(0, 0, 1)
+    pyramid = Pyramid(a, b, c, d, apex)
+    # Integrand & Solution
+    integrand(p) = 1.0u"A"
+    w = norm(b - a)
+    h = norm(d - a)
+    solution = (1 // 3) * w * h * u"A*m"
+    # Package and run tests
+    testable = TestableGeometry(integrand, pyramid, solution)
+    runtests(testable)
 end
 
 @testitem "Meshes.Quadrangle" setup=[Combinations] begin
@@ -887,25 +883,23 @@ end
 end
 
 @testitem "Meshes.Wedge" setup=[Combinations] begin
-    if pkgversion(Meshes) >= v"0.52.12"
-        # Geometry
-        a₀ = Point(0, 0, 0)
-        b₀ = Point(1, 0, 0)
-        c₀ = Point(0, 1, 0)
-        a₁ = Point(0, 0, 1)
-        b₁ = Point(1, 0, 1)
-        c₁ = Point(0, 1, 1)
-        wedge = Wedge(a₀, b₀, c₀, a₁, b₁, c₁)
+    # Geometry
+    a₀ = Point(0, 0, 0)
+    b₀ = Point(1, 0, 0)
+    c₀ = Point(0, 1, 0)
+    a₁ = Point(0, 0, 1)
+    b₁ = Point(1, 0, 1)
+    c₁ = Point(0, 1, 1)
+    wedge = Wedge(a₀, b₀, c₀, a₁, b₁, c₁)
 
-        # Integrand & Solution
-        function integrand(p::Meshes.Point)
-            x, y, z = ustrip.(u"m", to(p))
-            (x + 2y + 3z) * u"A"
-        end
-        solution = (5 // 4) * u"A*m^3"
-
-        # Package and run tests
-        testable = TestableGeometry(integrand, wedge, solution)
-        runtests(testable)
+    # Integrand & Solution
+    function integrand(p::Meshes.Point)
+        x, y, z = ustrip.(u"m", to(p))
+        (x + 2y + 3z) * u"A"
     end
+    solution = (5 // 4) * u"A*m^3"
+
+    # Package and run tests
+    testable = TestableGeometry(integrand, wedge, solution)
+    runtests(testable)
 end
