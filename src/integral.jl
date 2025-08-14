@@ -63,24 +63,14 @@ function _integral(
 ) where {DM <: DifferentiationMethod, T <: AbstractFloat}
     _check_diff_method_support(geometry, diff_method)
 
-    # Implementation depends on number of parametric dimensions over which to integrate
-    N = Meshes.paramdim(geometry)
-    if N == 1
-        integrand(t) = f(geometry(t)) * differential(geometry, (t,), diff_method)
-        return QuadGK.quadgk(integrand, zero(FP), one(FP); rule.kwargs...)[1]
-    elseif N == 2
-        # Issue deprecation warning
-        Base.depwarn("Use `HAdaptiveCubature` instead of \
-                     `GaussKronrod` for surfaces.", :integral)
-
-        # Nested integration
-        integrand2D(u, v) = f(geometry(u, v)) * differential(geometry, (u, v), diff_method)
-        ∫₁(v) = QuadGK.quadgk(u -> integrand2D(u, v), zero(FP), one(FP); rule.kwargs...)[1]
-        return QuadGK.quadgk(v -> ∫₁(v), zero(FP), one(FP); rule.kwargs...)[1]
-    else
-        _error_unsupported_combination("geometry with more than two parametric dimensions",
-            "GaussKronrod")
+    # Only supported for 1D geometries
+    if Meshes.paramdim(geometry) != 1
+        msg = "GaussKronrod rules not supported in more than one parametric dimension."
+        throw(ArgumentError(msg))
     end
+
+    integrand(t) = f(geometry(t)) * differential(geometry, (t,), diff_method)
+    return QuadGK.quadgk(integrand, zero(FP), one(FP); rule.kwargs...)[1]
 end
 
 # GaussLegendre

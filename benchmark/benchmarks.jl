@@ -21,12 +21,19 @@ rules = (
     (name = "HAdaptiveCubature", rule = HAdaptiveCubature())
 )
 geometries = (
-    (name = "Segment", item = Segment(Point(0, 0, 0), Point(1, 1, 1))),
-    (name = "Sphere", item = Sphere(Point(0, 0, 0), 1.0))
+    (name = "Segment", item = Segment(Point(0, 0, 0), Point(1, 1, 1))), # 1D
+    (name = "Sphere", item = Sphere(Point(0, 0), 1.0)), # 2D
+    (name = "Sphere", item = Sphere(Point(0, 0, 0), 1.0)) # 3D
 )
 
 SUITE["Integrals"] = let s = BenchmarkGroup()
     for (int, rule, geometry) in Iterators.product(integrands, rules, geometries)
+        # Skip unsupported applications of GaussKronrod
+        if (Meshes.paramdim(geometry.item) > 1) && (rule.rule == GaussKronrod())
+            continue
+        end
+
+        # Construct benchmark and add it to test suite
         n1 = geometry.name
         n2 = "$(int.name) $(rule.name)"
         s[n1][n2] = @benchmarkable integral($int.f, $geometry.item, $rule.rule)

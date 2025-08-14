@@ -1,14 +1,4 @@
 ################################################################################
-#                           Misc. Internal Tools
-################################################################################
-
-# Common error message structure
-function _error_unsupported_combination(geometry, rule)
-    msg = "Integrating a $geometry using a $rule rule not supported."
-    throw(ArgumentError(msg))
-end
-
-################################################################################
 #                           DifferentiationMethod
 ################################################################################
 

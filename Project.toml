@@ -1,6 +1,6 @@
 name = "MeshIntegrals"
 uuid = "dadec2fd-bbe0-4da4-9dbe-476c782c8e47"
-version = "0.16.4"
+version = "0.17.0-DEV"
 
 [deps]
 CliffordNumbers = "3998ac73-6bd4-4031-8035-f167dd3ed523"

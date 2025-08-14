@@ -63,7 +63,7 @@ This file includes tests for:
         elseif N == 2
             # surface
             aliases = Bool.((0, 1, 0))
-            rules = Bool.((1, 1, 1))
+            rules = Bool.((0, 1, 1))
             return SupportStatus(aliases..., rules..., autoenzyme)
         elseif N == 3
             # volume
