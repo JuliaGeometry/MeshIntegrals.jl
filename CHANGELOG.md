@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.17.0] - 2025-08-14
+
 ### Changed
 
 - Increased minimum dependency version for Meshes.jl to `v0.52.12` and CoordRefSystems.jl to `0.16` to natively support some new geometry types.
