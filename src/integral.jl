@@ -2,6 +2,9 @@
 #                         Master Integral Function
 ################################################################################
 
+# Default integration rule when rule arg is unspecified
+_default_rule(g) = ifelse(Meshes.iscurve(g), GaussKronrod(), HAdaptiveCubature())
+
 """
     integral(f, geometry[, rule]; kwargs...)
 
@@ -22,10 +25,6 @@ calculate Jacobians within the integration domain.
 """
 function integral end
 
-# Default integration rule to use if unspecified
-_default_rule(geometry) = ifelse(Meshes.iscurve, GaussKronrod(), HAdaptiveCubature())
-
-# If only f and geometry are specified, select default rule
 function integral(
         f,
         geometry::Geometry,
