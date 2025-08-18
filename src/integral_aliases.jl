@@ -1,5 +1,5 @@
 function _alias_error_msg(name, N)
-    "Performing a $name integral on a geometry with $N parametric dimensions not supported."
+    "$name integrals not supported on a geometry without exactly $N parametric dimensions."
 end
 
 ################################################################################
@@ -27,8 +27,8 @@ function lineintegral(
         rule::IntegrationRule = GaussKronrod();
         kwargs...
 )
-    if (N = Meshes.paramdim(geometry)) != 1
-        throw(ArgumentError(_alias_error_msg("line", N)))
+    if !Meshes.iscurve(geometry)
+        throw(ArgumentError(_alias_error_msg("Line", 1)))
     end
 
     return integral(f, geometry, rule; kwargs...)
@@ -59,8 +59,8 @@ function surfaceintegral(
         rule::IntegrationRule = HAdaptiveCubature();
         kwargs...
 )
-    if (N = Meshes.paramdim(geometry)) != 2
-        throw(ArgumentError(_alias_error_msg("surface", N)))
+    if !Meshes.issurface(geometry)
+        throw(ArgumentError(_alias_error_msg("Surface", 2)))
     end
 
     return integral(f, geometry, rule; kwargs...)
@@ -91,8 +91,8 @@ function volumeintegral(
         rule::IntegrationRule = HAdaptiveCubature();
         kwargs...
 )
-    if (N = Meshes.paramdim(geometry)) != 3
-        throw(ArgumentError(_alias_error_msg("volume", N)))
+    if !Meshes.issolid(geometry)
+        throw(ArgumentError(_alias_error_msg("Volume", 3)))
     end
 
     return integral(f, geometry, rule; kwargs...)
