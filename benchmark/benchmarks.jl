@@ -2,6 +2,7 @@ using BenchmarkTools
 using LinearAlgebra
 using Meshes
 using MeshIntegrals
+using StaticArrays
 using Unitful
 import Enzyme
 
@@ -11,9 +12,12 @@ const SUITE = BenchmarkGroup()
 #                                      Integrals
 ############################################################################################
 
+# Like fill but returns an SVector to eliminate integrand function allocations
+staticfill(val, N) = SVector(ntuple(Returns(val), N)...)
+
 integrands = (
     (name = "Scalar", f = p -> norm(to(p))),
-    (name = "Vector", f = p -> fill(norm(to(p)), 3))
+    (name = "Vector", f = p -> staticfill(norm(to(p)), 3))
 )
 rules = (
     (name = "GaussLegendre", rule = GaussLegendre(100)),

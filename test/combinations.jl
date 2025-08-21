@@ -18,8 +18,11 @@ This file includes tests for:
     import LinearAlgebra: norm
     using Meshes
     using MeshIntegrals: MeshIntegrals, GeometryOrDomain
+    import StaticArrays: SVector
     import Unitful: @u_str, Quantity, ustrip
     import Enzyme
+
+    staticfill(val, N) = SVector(ntuple(Returns(val), N)...)
 
     # Used for testing callable objects as integrand functions
     struct Callable{F <: Function}
@@ -113,8 +116,8 @@ This file includes tests for:
                 @test integral(f, testable.geometry, rule)≈sol rtol=rtol
 
                 # Vector integrand
-                fv(p) = fill(testable.integrand(p), 3)
-                sol_v = fill(testable.solution, 3)
+                fv(p) = staticfill(testable.integrand(p), 3)
+                sol_v = staticfill(testable.solution, 3)
                 @test integral(fv, testable.geometry, rule)≈sol_v rtol=rtol
             else
                 f = testable.integrand
