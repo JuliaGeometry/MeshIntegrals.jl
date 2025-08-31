@@ -16,6 +16,9 @@ makedocs(
             "Support Status" => "support.md",
             "Tips" => "tips.md"
         ],
+        "Examples" => [
+            "Changelog" => "examples/darts.md"
+        ],
         "Developer Notes" => [
             "Changelog" => "developer/CHANGELOG.md",
             "How it Works" => "developer/how_it_works.md",
