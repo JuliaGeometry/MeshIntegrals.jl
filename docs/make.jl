@@ -17,7 +17,7 @@ makedocs(
             "Tips" => "tips.md"
         ],
         "Examples" => [
-            "Changelog" => "examples/darts.md"
+            "Darts Strategy Analysis" => "examples/darts.md"
         ],
         "Developer Notes" => [
             "Changelog" => "developer/CHANGELOG.md",
