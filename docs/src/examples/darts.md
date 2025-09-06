@@ -1,12 +1,15 @@
 # Darts (Draft)
 
 Steps
-- Comstruct a set of geometries representimg a dartboard with individual sector scores
+- Construct a set of geometries representing a dartboard with individual sector scores
 - Develop a model of the dart trajectory with probability density distribution
 - Use integration over each geometry to determine the probabilities of particular outcomes
 - Calculate expected value for the throw, repeat for other distributions to compare strategies
 
+Note: can use `@setup darts` block to hide some implementation code
+
 ```@example darts
+# using Distributions
 using Meshes
 using MeshIntegrals
 using Unitful
@@ -14,11 +17,43 @@ using Unitful
 
 ## Modeling the Dartboard
 
-Model the geometries
+Define a dartboard coordinate system
 ```@example darts
-center = Point(0u"m", 0u"m", 1.5u"m")
-point(r, ϕ) = center + Meshes.Vec(0u"m", r*sin(ϕ)*u"m", r*cos(ϕ)*u"m")
+dartboard_center = Point(0u"m", 0u"m", 1.5u"m")
+dartboard_plane = Plane(dartboard_center, Meshes.Vec(1, 0, 0))
 
+function point(r::Unitful.Length, ϕ)
+    t = ustrip(r, u"m")
+    dartboard_plane(t * sin(ϕ), t * cos(ϕ))
+end
+```
+
+Model the bullseye region
+```@example darts
+bullseye_inner = (geometry = Circle(dartboard_plane, 6.35u"mm"), points = 50)
+bullseye_outer = (geometry = Circle(dartboard_plane, 16u"mm"), points = 25)
+# TODO subtract center circle region from outer circle region -- or replace with another annular geometry
+```
+
+Model the sectors
+```@example darts
+# Scores on the Board
+ring1 = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5]
+ring2 = 3 .* ring1
+ring3 = ring1
+ring4 = 2 .* ring1
+board_points = hcat(ring1, ring2, ring3, ring4)
+
+# Locations
+sector_width = 2π/20
+phis_a = range(0, 2π, 20) .- sector_width/2
+phis_b = range(0, 2π, 20) .+ sector_width/2
+rs_inner = [16, 99, 107, 162]u"mm"
+rs_outer = [99, 107, 162, 170]u"mm"
+```
+
+Define a struct to manage sector data
+```@example darts
 struct Sector{L, A}
     r_inner::L
     r_outer::L
@@ -35,16 +70,17 @@ function to_ngon(sector::Sector; N=8)
 end
 ```
 
-Point system
-```@example darts
-sector_width = 2pi/20
-ring1 = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5]
-ring2 = 3 .* ring1
-ring3 = ring1
-ring4 = 2 .* ring1
+## Modeling the Dart Trajectory
 
-bullseye_inner = (points=50,)
-bullseye_outer = (points=25,)
+Define a probability distribution for where the dart will land
+```
+dist = MvNormal(μs, σs)
 ```
 
-## Modeling the Dart Trajectory
+Integrand function is the distribution's PDF value at any particular point
+```
+function integrand(p::Point)
+    v_error = dist_center - p
+    pdf(dist, v_error)
+end
+```
