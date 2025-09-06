@@ -13,25 +13,26 @@ Note: can use `@setup darts` block to hide some implementation code
 using Meshes
 using MeshIntegrals
 using Unitful
+using Unitful.DefaultSymbols: mm, m
 ```
 
 ## Modeling the Dartboard
 
 Define a dartboard coordinate system
 ```@example darts
-dartboard_center = Point(0u"m", 0u"m", 1.5u"m")
+dartboard_center = Point(0m, 0m, 1.5m)
 dartboard_plane = Plane(dartboard_center, Meshes.Vec(1, 0, 0))
 
 function point(r::Unitful.Length, ϕ)
-    t = ustrip(r, u"m")
+    t = ustrip(r, m)
     dartboard_plane(t * sin(ϕ), t * cos(ϕ))
 end
 ```
 
 Model the bullseye region
 ```@example darts
-bullseye_inner = (geometry = Circle(dartboard_plane, 6.35u"mm"), points = 50)
-bullseye_outer = (geometry = Circle(dartboard_plane, 16u"mm"), points = 25)
+bullseye_inner = (geometry = Circle(dartboard_plane, 6.35mm), points = 50)
+bullseye_outer = (geometry = Circle(dartboard_plane, 16mm), points = 25)
 # TODO subtract center circle region from outer circle region -- or replace with another annular geometry
 ```
 
@@ -48,8 +49,9 @@ board_points = hcat(ring1, ring2, ring3, ring4)
 sector_width = 2π/20
 phis_a = range(0, 2π, 20) .- sector_width/2
 phis_b = range(0, 2π, 20) .+ sector_width/2
-rs_inner = [16, 99, 107, 162]u"mm"
-rs_outer = [99, 107, 162, 170]u"mm"
+phis = Iterators.zip(phis_a, phis_b)
+rs = [ (16mm, 99mm), (99mm, 107mm), (107mm, 162mm), (162mm, 170mm) ]
+grid = Iterators.product(phis, rs)
 ```
 
 Define a struct to manage sector data
