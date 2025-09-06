@@ -77,7 +77,7 @@ function to_ngon(sector::Sector; N=8)
 end
 
 # Convert sector data to geometries
-sector_geometries = map(to_ngon, sector_data)
+sector_geometries =  sector_data .|> Sector .|> to_ngon
 ```
 
 ## Modeling the Dart Trajectory
