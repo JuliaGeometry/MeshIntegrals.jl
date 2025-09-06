@@ -52,6 +52,9 @@ phis_b = range(0, 2π, 20) .+ sector_width/2
 phis = Iterators.zip(phis_a, phis_b)
 rs = [ (16mm, 99mm), (99mm, 107mm), (107mm, 162mm), (162mm, 170mm) ]
 grid = Iterators.product(phis, rs)
+
+# Collect sector data (points, coordinates)
+sector_data = Iterators.zip(grid, board_points)
 ```
 
 Define a struct to manage sector data
@@ -64,12 +67,17 @@ struct Sector{L, A}
     points::Int64
 end
 
+Sector(points, (phis, rs)) = Sector(rs[1], rs[2], phis[1], phis[2], points)
+
 function to_ngon(sector::Sector; N=8)
 	ϕs = range(sector.phi_a, sector.phi_b, length=N)
     arc_o = [point(sector.r_outer, ϕ) for ϕ in ϕs]
     arc_i = [point(sector.r_inner, ϕ) for ϕ in reverse(ϕs)]
     return Ngon(arc_o..., arc_i...)
 end
+
+# Convert sector data to geometries
+sector_geometries = map(to_ngon, sector_data)
 ```
 
 ## Modeling the Dart Trajectory
