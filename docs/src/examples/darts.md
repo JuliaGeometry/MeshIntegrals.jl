@@ -9,7 +9,8 @@ Steps
 Note: can use `@setup darts` block to hide some implementation code
 
 ```@example darts
-# using Distributions
+using Colors
+using Distributions
 using Meshes
 using MeshIntegrals
 using Unitful
@@ -32,18 +33,29 @@ end
 Model the bullseye region
 ```@example darts
 bullseye_inner = (geometry = Circle(dartboard_plane, 6.35mm), points = 50)
-bullseye_outer = (geometry = Circle(dartboard_plane, 16mm), points = 25)
+bullseye_outer = (geometry = Circle(dartboard_plane, 16mm), points = 25, color=)
 # TODO subtract center circle region from outer circle region -- or replace with another annular geometry
 ```
 
 Model the sectors
-```@example darts
+```@setup darts
 # Scores on the Board
 ring1 = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5]
 ring2 = 3 .* ring1
 ring3 = ring1
 ring4 = 2 .* ring1
 board_points = hcat(ring1, ring2, ring3, ring4)
+
+# Colors on the board
+red = colorant"red"
+black = colorant"black"
+white = colorant"white"
+green = colorant"green"
+ring1 = repeat([black, white], 10)
+ring2 = repeat([red, green], 10)
+ring3 = ring1
+ring4 = ring2
+board_colors = hcat(ring1, ring2, ring3, ring4)
 
 # Locations
 sector_width = 2π/20
@@ -59,6 +71,12 @@ sector_data = Iterators.zip(grid, board_points)
 
 Define a struct to manage sector data
 ```@example darts
+struct ScoredRegion{G, C}
+    geometry::G
+    points::Int64
+    color::C
+end
+
 struct Sector{L, A}
     r_inner::L
     r_outer::L
@@ -77,6 +95,7 @@ function to_ngon(sector::Sector; N=8)
 end
 
 # Convert sector data to geometries
+sectors = 
 sector_geometries =  sector_data .|> Sector .|> to_ngon
 ```
 
