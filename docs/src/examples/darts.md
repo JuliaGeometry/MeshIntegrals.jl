@@ -55,7 +55,7 @@ end
 
 ## Modeling the Dartboard
 
-Define a dartboard coordinate system
+Model the dartboard
 ```@example darts
 dartboard_center = Meshes.Point(0m, 0m, 1.5m)
 dartboard_plane = Plane(dartboard_center, Meshes.Vec(1, 0, 0))
@@ -64,10 +64,7 @@ function point(r::Unitful.Length, ϕ)
     t = ustrip(m, r)
     dartboard_plane(t * sin(ϕ), t * cos(ϕ))
 end
-```
 
-Model the dart board's sectors
-```@example darts
 # Scores on the Board
 ring1 = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5]
 ring2 = 3 .* ring1
@@ -92,13 +89,8 @@ board_coords = Iterators.product(phis, rs)
 board_sectors = map(((phis, rs),) -> Sector(rs, phis), board_coords)
 board_ngons = to_ngon.(board_sectors)
 
-# Consolidate the board's sector data
+# Consolidate the Sectors
 sector_data = Iterators.zip(board_ngons, board_points, board_colors)
-```
-
-Collect dart board data into `ScoredRegion`s
-```@example darts
-# Sectors
 board_regions = map(args -> ScoredRegion(args...), sector_data)
 
 # Center region
@@ -107,10 +99,7 @@ bullseye_outer = ScoredRegion(to_ngon(Sector((6.35mm, 16.0mm), (0.0, 2π)); N=32
 
 # Get set of all regions
 all_regions = vcat(vec(board_regions), bullseye_inner, bullseye_outer)
-```
 
-Illustration
-```@example darts
 fig = Figure()
 ax = LScene(fig[1, 1], scenekw=(show_axis=true,))
 
