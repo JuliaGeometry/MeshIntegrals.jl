@@ -57,7 +57,7 @@ end
 
 Define a dartboard coordinate system
 ```@example darts
-dartboard_center = Point(0m, 0m, 1.5m)
+dartboard_center = Meshes.Point(0m, 0m, 1.5m)
 dartboard_plane = Plane(dartboard_center, Meshes.Vec(1, 0, 0))
 
 function point(r::Unitful.Length, ϕ)
