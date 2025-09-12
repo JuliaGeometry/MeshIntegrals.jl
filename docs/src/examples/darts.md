@@ -37,19 +37,24 @@ end
 Sector(rs, phis) = Sector(rs..., phis...)
 
 # Sector -> Ngon
-function to_ngon(sector::Sector; N=8)
+function Ngon(sector::Sector; N=8)
 	ϕs = range(sector.phi_a, sector.phi_b, length=N)
     arc_o = [point(sector.r_outer, ϕ) for ϕ in ϕs]
     arc_i = [point(sector.r_inner, ϕ) for ϕ in reverse(ϕs)]
     return Ngon(arc_o..., arc_i...)
 end
 
-function to_makie_poly(circle::Meshes.Circle)
-    return nothing # TODO
+function Point3f(p::Meshes.Point)
+    x, y, z = ustrip(m, [p.coords.x, p.coords.y, p.coords.z])
+    return Point3f(x, y, z)
+end
+
+function to_makie_poly(circle::Meshes.Circle; N=32)
+    return [Point3f(circle(t)) for t in range(0, 1, length=N)]
 end
 
 function to_makie_poly(ngon::Meshes.Ngon)
-    return nothing # TODO
+    return [Point3f(pt) for pt in ngon.vertices]
 end
 ```
 
@@ -94,8 +99,8 @@ sector_data = Iterators.zip(board_ngons, board_points, board_colors)
 board_regions = map(args -> ScoredRegion(args...), sector_data)
 
 # Center region
-bullseye_inner = ScoredRegion(Circle(dartboard_plane, 6.35mm), 50, red)
-bullseye_outer = ScoredRegion(to_ngon(Sector((6.35mm, 16.0mm), (0.0, 2π)); N=32), 25, green)
+bullseye_inner = ScoredRegion(Meshes.Circle(dartboard_plane, 6.35mm), 50, red)
+bullseye_outer = ScoredRegion(Ngon(Sector((6.35mm, 16.0mm), (0.0, 2π)); N=32), 25, green)
 
 # Get set of all regions
 all_regions = vcat(vec(board_regions), bullseye_inner, bullseye_outer)
@@ -126,3 +131,9 @@ function integrand(p::Point)
     pdf(dist, v_error)
 end
 ```
+
+Example image of trajectory probability distribution on board
+
+## Strategy Evaluation
+
+Use these tools to evaluate different aiming/throwing parameters and their impact on expected scores.
