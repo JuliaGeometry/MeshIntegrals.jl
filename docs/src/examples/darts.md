@@ -7,6 +7,7 @@ Steps
 - Calculate expected value for the throw, repeat for other distributions to compare strategies
 
 ```@example darts
+using CairoMakie
 using Colors
 using Distributions
 using Meshes
@@ -41,6 +42,14 @@ function to_ngon(sector::Sector; N=8)
     arc_o = [point(sector.r_outer, ϕ) for ϕ in ϕs]
     arc_i = [point(sector.r_inner, ϕ) for ϕ in reverse(ϕs)]
     return Ngon(arc_o..., arc_i...)
+end
+
+function to_makie_poly(circle::Meshes.Circle)
+    return nothing # TODO
+end
+
+function to_makie_poly(ngon::Meshes.Ngon)
+    return nothing # TODO
 end
 ```
 
@@ -95,6 +104,21 @@ board_regions = map(args -> ScoredRegion(args...), sector_data)
 # Center region
 bullseye_inner = ScoredRegion(Circle(dartboard_plane, 6.35mm), 50, red)
 bullseye_outer = ScoredRegion(to_ngon(Sector((6.35mm, 16.0mm), (0.0, 2π)); N=32), 25, green)
+
+# Get set of all regions
+all_regions = vcat(vec(board_regions), bullseye_inner, bullseye_outer)
+```
+
+Illustration
+```@example darts
+fig = Figure()
+ax = LScene(fig[1, 1], scenekw=(show_axis=true,))
+
+for region in all_regions
+    poly!(ax, to_makie_poly(region.geometry), color=region.color)
+end
+
+fig
 ```
 
 ## Modeling the Dart Trajectory
