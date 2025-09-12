@@ -10,7 +10,7 @@ Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
 BenchmarkTools = "1"
-CairoMakie = "0.15"
+CairoMakie = "0.15 - 0.24"
 Colors = "0.13"
 Distributions = "0.25"
 Documenter = "1"
