@@ -49,13 +49,8 @@ function to_Point3f(p::Meshes.Point)
     return Point3f(x, y, z)
 end
 
-function to_makie_poly(circle::Meshes.Circle; N=32)
-    return [to_Point3f(circle(t)) for t in range(0, 1, length=N)]
-end
-
-function to_makie_poly(ngon::Meshes.Ngon)
-    return [to_Point3f(pt) for pt in ngon.vertices]
-end
+to_makie_poly(circle::Meshes.Circle; N=32) = Point3f[to_Point3f(circle(t)) for t in range(0, 1, length=N)]
+to_makie_poly(ngon::Meshes.Ngon) = Point3f[to_Point3f(pt) for pt in ngon.vertices]
 ```
 
 ## Modeling the Dartboard
