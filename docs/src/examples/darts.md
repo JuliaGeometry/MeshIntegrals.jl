@@ -41,7 +41,7 @@ function Ngon(sector::Sector; N=8)
 	ϕs = range(sector.phi_a, sector.phi_b, length=N)
     arc_o = [point(sector.r_outer, ϕ) for ϕ in ϕs]
     arc_i = [point(sector.r_inner, ϕ) for ϕ in reverse(ϕs)]
-    return Ngon(arc_o..., arc_i...)
+    return Meshes.Ngon(arc_o..., arc_i...)
 end
 
 function Point3f(p::Meshes.Point)
