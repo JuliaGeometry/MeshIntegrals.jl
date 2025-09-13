@@ -45,7 +45,7 @@ function Ngon(sector::Sector; N=8)
 end
 
 function Point3f(p::Meshes.Point)
-    x, y, z = ustrip(m, [p.coords.x, p.coords.y, p.coords.z])
+    x, y, z = ustrip.(m, [p.coords.x, p.coords.y, p.coords.z])
     return Point3f(x, y, z)
 end
 
