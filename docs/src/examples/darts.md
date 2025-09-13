@@ -100,14 +100,16 @@ bullseye_outer = ScoredRegion(Ngon(Sector((6.35mm, 16.0mm), (0.0, 2π)); N=32), 
 # Get set of all regions
 all_regions = vcat(vec(board_regions), bullseye_inner, bullseye_outer)
 
+# Initialize a 3D figure
 fig = Figure()
-ax = LScene(fig[1, 1], scenekw=(show_axis=true,))
+#ax = LScene(fig[1, 1], scenekw=(show_axis=true,))
+ax = Axis3(fig[1, 1]; xlabel="X", ylabel="Y", zlabel="Z")
+limits!(ax, -0.1..0.1, -1.5..1.5, 0..3; fixed=true)
 
+# Populate the dart board scored regions
 for region in all_regions
     poly!(ax, _poly(region.geometry), color=region.color)
 end
-
-limits!(ax, -0.1 .. 0.1, -1.5 .. 1.5, 0 .. 3)
 
 fig
 ```
