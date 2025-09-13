@@ -92,7 +92,7 @@ phis = Iterators.zip(phis_a, phis_b)
 rs = [ (16mm, 99mm), (99mm, 107mm), (107mm, 162mm), (162mm, 170mm) ]
 board_coords = Iterators.product(phis, rs)
 board_sectors = map(((phis, rs),) -> Sector(rs, phis), board_coords)
-board_ngons = to_ngon.(board_sectors)
+board_ngons = Ngon.(board_sectors)
 
 # Consolidate the Sectors
 sector_data = Iterators.zip(board_ngons, board_points, board_colors)
