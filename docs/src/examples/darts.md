@@ -107,6 +107,8 @@ for region in all_regions
     poly!(ax, _poly(region.geometry), color=region.color)
 end
 
+limits!(ax, -0.1 .. 0.1, -1.5 .. 1.5, 0 .. 3)
+
 fig
 ```
 
