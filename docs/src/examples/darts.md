@@ -44,17 +44,17 @@ function Ngon(sector::Sector; N=8)
     return Meshes.Ngon(arc_o..., arc_i...)
 end
 
-function Point3f(p::Meshes.Point)
+function to_Point3f(p::Meshes.Point)
     x, y, z = ustrip.(m, [p.coords.x, p.coords.y, p.coords.z])
     return Point3f(x, y, z)
 end
 
 function to_makie_poly(circle::Meshes.Circle; N=32)
-    return [Point3f(circle(t)) for t in range(0, 1, length=N)]
+    return [to_Point3f(circle(t)) for t in range(0, 1, length=N)]
 end
 
 function to_makie_poly(ngon::Meshes.Ngon)
-    return [Point3f(pt) for pt in ngon.vertices]
+    return [to_Point3f(pt) for pt in ngon.vertices]
 end
 ```
 
