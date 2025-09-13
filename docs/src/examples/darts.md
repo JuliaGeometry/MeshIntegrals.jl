@@ -44,13 +44,13 @@ function Ngon(sector::Sector; N=8)
     return Meshes.Ngon(arc_o..., arc_i...)
 end
 
-function to_Point3f(p::Meshes.Point)
+function _Point3f(p::Meshes.Point)
     x, y, z = ustrip.(m, [p.coords.x, p.coords.y, p.coords.z])
     return Point3f(x, y, z)
 end
 
-to_makie_poly(circle::Meshes.Circle; N=32) = Point3f[to_Point3f(circle(t)) for t in range(0, 1, length=N)]
-to_makie_poly(ngon::Meshes.Ngon) = Point3f[to_Point3f(pt) for pt in ngon.vertices]
+_poly(circle::Meshes.Circle; N=32) = [(_Point3f(circle(t)) for t in range(0, 1, length=N))...]
+_poly(ngon::Meshes.Ngon) = [(_Point3f(pt) for pt in ngon.vertices)...]
 ```
 
 ## Modeling the Dartboard
@@ -104,7 +104,7 @@ fig = Figure()
 ax = LScene(fig[1, 1], scenekw=(show_axis=true,))
 
 for region in all_regions
-    poly!(ax, to_makie_poly(region.geometry), color=region.color)
+    poly!(ax, _poly(region.geometry), color=region.color)
 end
 
 fig
