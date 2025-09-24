@@ -10,6 +10,7 @@ Steps
 using CairoMakie
 using Colors
 using Distributions
+using GeometryBasics
 using Meshes
 using MeshIntegrals
 using Unitful
@@ -37,7 +38,7 @@ end
 Sector(rs, phis) = Sector(rs..., phis...)
 
 # Sector -> Ngon
-function Ngon(sector::Sector; N=8)
+function _Ngon(sector::Sector; N=8)
 	ϕs = range(sector.phi_a, sector.phi_b, length=N)
     arc_o = [point(sector.r_outer, ϕ) for ϕ in ϕs]
     arc_i = [point(sector.r_inner, ϕ) for ϕ in reverse(ϕs)]
@@ -51,6 +52,9 @@ end
 
 _poly(circle::Meshes.Circle; N=32) = [(_Point3f(circle(t)) for t in range(0, 1, length=N))...]
 _poly(ngon::Meshes.Ngon) = [(_Point3f(pt) for pt in ngon.vertices)...]
+
+_poly2d(circle::Meshes.Circle; N=32) = [(_Point2f(circle(t)) for t in range(0, 1, length=N))...]
+_poly2d(ngon::Meshes.Ngon) = [(_Point2f(pt) for pt in ngon.vertices)...]
 ```
 
 ## Modeling the Dartboard
@@ -81,13 +85,14 @@ board_colors = hcat(ring1, ring2, ring3, ring4)
 
 # Sector geometries
 sector_width = 2π/20
-phis_a = range(0, 2π, 20) .- sector_width/2
-phis_b = range(0, 2π, 20) .+ sector_width/2
+sector_centers = [n * sector_width for n in 0:19]
+phis_a = sector_centers .- sector_width/2
+phis_b = sector_centers .+ sector_width/2
 phis = Iterators.zip(phis_a, phis_b)
 rs = [ (16mm, 99mm), (99mm, 107mm), (107mm, 162mm), (162mm, 170mm) ]
 board_coords = Iterators.product(phis, rs)
 board_sectors = map(((phis, rs),) -> Sector(rs, phis), board_coords)
-board_ngons = Ngon.(board_sectors)
+board_ngons = _Ngon.(board_sectors)
 
 # Consolidate the Sectors
 sector_data = Iterators.zip(board_ngons, board_points, board_colors)
@@ -95,22 +100,24 @@ board_regions = map(args -> ScoredRegion(args...), sector_data)
 
 # Center region
 bullseye_inner = ScoredRegion(Meshes.Circle(dartboard_plane, 6.35mm), 50, red)
-bullseye_outer = ScoredRegion(Ngon(Sector((6.35mm, 16.0mm), (0.0, 2π)); N=32), 25, green)
+bullseye_outer = ScoredRegion(_Ngon(Sector((6.35mm, 16.0mm), (0.0, 2π)); N=32), 25, green)
 
 # Get set of all regions
 all_regions = vcat(vec(board_regions), bullseye_inner, bullseye_outer)
 
-# Initialize a 3D figure
 fig = Figure()
-#ax = LScene(fig[1, 1], scenekw=(show_axis=true,))
-ax = Axis3(fig[1, 1]; xlabel="X", ylabel="Y", zlabel="Z")
-limits!(ax, -0.1..0.1, -1.5..1.5, 0..3; fixed=true)
+ax = Axis(fig[1, 1], xlabel="y [m]", ylabel="z [m]")
+ax.aspect = DataAspect()
 
-# Populate the dart board scored regions
-for region in all_regions
-    poly!(ax, _poly(region.geometry), color=region.color)
+for region in board_regions
+    pts = _poly2d(region.geometry)
+    poly!(ax, pts, color=region.color)
+	
+    centerPt = centroid(region.geometry)
+    center = ustrip.(u"m", [centerPt.coords.y, centerPt.coords.z])
+    text!(ax, string(region.points), position=Point2f(center...), align=(:center,:center), color=:blue, fontsize=10)
 end
-
+	
 fig
 ```
 
