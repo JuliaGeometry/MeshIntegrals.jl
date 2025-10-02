@@ -14,7 +14,7 @@ Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
 Aqua = "0.8"
-CoordRefSystems = "0.16, 0.17, 0.18, 0.19"
+CoordRefSystems = "0.18, 0.19"
 Enzyme = "0.13.47"
 ExplicitImports = "1.6.0"
 LinearAlgebra = "1"
