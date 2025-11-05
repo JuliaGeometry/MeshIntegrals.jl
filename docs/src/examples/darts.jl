@@ -31,7 +31,6 @@ struct Sector{L <: Unitful.Length, A}
     ϕ_a::A 
     ϕ_b::A
 end
-#Sector(rs, ϕs) = Sector(rs..., ϕs...)
 
 # Sector -> Ngon
 function _Ngon(sector::Sector; N=32)
