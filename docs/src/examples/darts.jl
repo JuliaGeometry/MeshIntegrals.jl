@@ -6,46 +6,45 @@ using MeshIntegrals
 using Unitful
 using Unitful.DefaultSymbols: mm, m
 
-# For containing any scored landing region on the dart board
+
+################################################################################
+#                             Geometry Utils
+################################################################################
+
+# Define a plane (wall) on which the dartboard rests
+dartboard_center = Meshes.Point(0m, 0m, 1.5m)
+dartboard_plane = Plane(dartboard_center, Meshes.Vec(1, 0, 0))
+point(t, ϕ) = dartboard_plane(t * sin(ϕ), t * cos(ϕ))
+point(r::Unitful.Length, ϕ) = point(ustrip(u"m", r), ϕ)
+
+# Score-earning areas where darts can land
 struct ScoredRegion{G, C}
     geometry::G
     points::Int64
     color::C
 end
 
-# For defining an annular region
+# A sectoral geometry bounded by constant r and ϕ limits
 struct Sector{L <: Unitful.Length, A}
     r_inner::L
     r_outer::L
-    phi_a::A
-    phi_b::A
+    ϕ_a::A 
+    ϕ_b::A
 end
-Sector(rs, phis) = Sector(rs..., phis...)
-Sector((phis, rs)) = Sector(rs..., phis...)
+#Sector(rs, ϕs) = Sector(rs..., ϕs...)
 
 # Sector -> Ngon
 function _Ngon(sector::Sector; N=32)
-	ϕs = range(sector.phi_a, sector.phi_b, length=N)
+	ϕs = range(sector.ϕ_a, sector.ϕ_b, length=N)
     arc_o = [point(sector.r_outer, ϕ) for ϕ in ϕs]
     arc_i = [point(sector.r_inner, ϕ) for ϕ in reverse(ϕs)]
     return Meshes.Ngon(arc_o..., arc_i...)
 end
 
-_Point2f(p::Meshes.Point) = Point2f(ustrip.(u"m", (p.coords.y, p.coords.z))...)
-_Point3f(p::Meshes.Point) = Point3f(ustrip.(u"m", (p.coords.x, p.coords.y, p.coords.z))...)
 
-_poly(circle::Meshes.Circle; N=32) = [(_Point3f(circle(t)) for t in range(0, 1, length=N))...]
-_poly(ngon::Meshes.Ngon) = [(_Point3f(pt) for pt in ngon.vertices)...]
-_poly2d(circle::Meshes.Circle; N=32) = [(_Point2f(circle(t)) for t in range(0, 1, length=N))...]
-_poly2d(ngon::Meshes.Ngon) = [(_Point2f(pt) for pt in ngon.vertices)...]
-
-
-
-# Define dartboard plane
-dartboard_center = Meshes.Point(0m, 0m, 1.5m)
-dartboard_plane = Plane(dartboard_center, Meshes.Vec(1, 0, 0))
-point(t, ϕ) = dartboard_plane(t * sin(ϕ), t * cos(ϕ))
-point(r::Unitful.Length, ϕ) = point(ustrip(u"m", r), ϕ)
+################################################################################
+#                      Construct Dartboard ScoredRegions
+################################################################################
 
 # Sectorize the board
 #   scores
@@ -56,12 +55,12 @@ ring_c1 = repeat([colorant"black", colorant"white"], 10)
 ring_c2 = repeat([colorant"red", colorant"green"], 10)
 board_colors = hcat(ring_c1, ring_c2, ring_c1, ring_c2)
 #   geometries
-sector_width = 2π/20
-phis_a = range(0, 2π - sector_width, length=20) .- sector_width/2
-phis_b = range(0, 2π - sector_width, length=20) .+ sector_width/2
-phis = Iterators.zip(phis_a, phis_b)
+Δϕ = 2π/20
+ϕas = range(0, 2π - Δϕ, length=20) .- (Δϕ / 2)
+ϕbs = range(0, 2π - Δϕ, length=20) .+ (Δϕ / 2)
+ϕs = Iterators.zip(ϕas, ϕbs)
 rs = [ (16mm, 99mm), (99mm, 107mm), (107mm, 162mm), (162mm, 170mm) ]
-board_ngons = Iterators.product(phis, rs) .|> Sector .|> _Ngon
+board_ngons = map(((ϕs, rs),) -> _Ngon(Sector(rs..., ϕs...)), Iterators.product(ϕs, rs))
 
 # Consolidate the Sectors
 sector_data = Iterators.zip(board_ngons, board_points, board_colors)
@@ -69,16 +68,30 @@ board_regions = map(args -> ScoredRegion(args...), sector_data)
 
 # Center region
 bullseye_inner = ScoredRegion(Meshes.Circle(dartboard_plane, (6.35e-3)m), 50, colorant"red")
-bullseye_outer = ScoredRegion(_Ngon(Sector((6.35mm, 16.0mm), (0.0, 2π))), 25, colorant"green")
+bullseye_outer = ScoredRegion(_Ngon(Sector(6.35mm, 16.0mm, 0.0, 2π)), 25, colorant"green")
 
 # Get set of all regions
 all_regions = vcat(vec(board_regions), bullseye_inner, bullseye_outer)
 
 
+################################################################################
+#                               Makie Utils
+################################################################################
+
+# To Makie-compatible GeometryBasics types
+_Point2f(p::Meshes.Point) = Point2f(ustrip.(u"m", (p.coords.y, p.coords.z))...)
+_Point3f(p::Meshes.Point) = Point3f(ustrip.(u"m", (p.coords.x, p.coords.y, p.coords.z))...)
+
+# To Makie-compatible polygons
+_poly(circle::Meshes.Circle; N=32) = [(_Point3f(circle(t)) for t in range(0, 1, length=N))...]
+_poly(ngon::Meshes.Ngon) = [(_Point3f(pt) for pt in ngon.vertices)...]
+_poly2d(circle::Meshes.Circle; N=32) = [(_Point2f(circle(t)) for t in range(0, 1, length=N))...]
+_poly2d(ngon::Meshes.Ngon) = [(_Point2f(pt) for pt in ngon.vertices)...]
 
 
-
-
+################################################################################
+#                            Figure - Dartboard
+################################################################################
 
 # Illustrate the dartboard
 fig = Figure()
