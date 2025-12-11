@@ -504,7 +504,7 @@ end
     # Geometry
     a = π
     box = Box(Point(0, 0, 0), Point(a, a, a))
-    hexahedron = Hexahedron(vertices(discretize(box))...)
+    hexahedron = convert(Hexahedron, box)
 
     # Integrand & Solution
     function integrand(p::Meshes.Point)
