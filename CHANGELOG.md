@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.17.2] - 2025-12-11
+
+- Updated compatibility entry for [Meshes.jl](https://github.com/JuliaGeometry/Meshes.jl) to support v0.56 ([#205](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/214)).
+
+
 ## [0.17.1] - 2025-10-09
 
 - Updated compatibility entry for [CoordRefSystems.jl](https://github.com/JuliaEarth/CoordRefSystems.jl) to support v0.19 and for [Meshes.jl](https://github.com/JuliaGeometry/Meshes.jl) to support v0.55 ([#205](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/205)).
