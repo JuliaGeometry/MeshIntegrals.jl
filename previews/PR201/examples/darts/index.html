@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Darts Strategy Analysis · MeshIntegrals.jl</title><meta name="title" content="Darts Strategy Analysis · MeshIntegrals.jl"/><meta property="og:title" content="Darts Strategy Analysis · MeshIntegrals.jl"/><meta property="twitter:title" content="Darts Strategy Analysis · MeshIntegrals.jl"/><meta name="description" content="Documentation for MeshIntegrals.jl."/><meta property="og:description" content="Documentation for MeshIntegrals.jl."/><meta property="twitter:description" content="Documentation for MeshIntegrals.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">MeshIntegrals.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><span class="tocitem">Home</span><ul><li><a class="tocitem" href="../../">About</a></li><li><a class="tocitem" href="../../tutorial/">Tutorial</a></li><li><a class="tocitem" href="../../integration_rules/">Integration Rules</a></li><li><a class="tocitem" href="../../support/">Support Status</a></li><li><a class="tocitem" href="../../tips/">Tips</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li class="is-active"><a class="tocitem" href>Darts Strategy Analysis</a><ul class="internal"><li><a class="tocitem" href="#Modeling-the-Dartboard"><span>Modeling the Dartboard</span></a></li><li><a class="tocitem" href="#Modeling-the-Dart-Trajectory"><span>Modeling the Dart Trajectory</span></a></li><li><a class="tocitem" href="#Strategy-Evaluation"><span>Strategy Evaluation</span></a></li></ul></li></ul></li><li><span class="tocitem">Developer Notes</span><ul><li><a class="tocitem" href="../../developer/CHANGELOG/">Changelog</a></li><li><a class="tocitem" href="../../developer/how_it_works/">How it Works</a></li><li><a class="tocitem" href="../../developer/specializations/">Specializations</a></li></ul></li><li><a class="tocitem" href="../../api/">Public API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Darts Strategy Analysis</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Darts Strategy Analysis</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaGeometry/MeshIntegrals.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaGeometry/MeshIntegrals.jl/blob/main/docs/src/examples/darts.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Darts-(Draft)"><a class="docs-heading-anchor" href="#Darts-(Draft)">Darts (Draft)</a><a id="Darts-(Draft)-1"></a><a class="docs-heading-anchor-permalink" href="#Darts-(Draft)" title="Permalink"></a></h1><p>Steps</p><ul><li>Construct a set of geometries representing a dartboard with individual sector scores</li><li>Develop a model of the dart trajectory with probability density distribution</li><li>Use integration over each geometry to determine the probabilities of particular outcomes</li><li>Calculate expected value for the throw, repeat for other distributions to compare strategies</li></ul><pre><code class="language-julia hljs">using CairoMakie
+using Colors
+using Distributions
+using GeometryBasics
+using Meshes
+using MeshIntegrals
+using Unitful
+using Unitful.DefaultSymbols: mm, m
+
+red = colorant&quot;red&quot;
+black = colorant&quot;black&quot;
+white = colorant&quot;white&quot;
+green = colorant&quot;green&quot;
+
+# For containing any scored landing region on the dart board
+struct ScoredRegion{G, C}
+    geometry::G
+    points::Int64
+    color::C
+end
+
+# For defining an annular region
+struct Sector{L, A}
+    r_inner::L
+    r_outer::L
+    phi_a::A
+    phi_b::A
+end
+Sector(rs, phis) = Sector(rs..., phis...)
+
+# Sector -&gt; Ngon
+function _Ngon(sector::Sector; N=8)
+	ϕs = range(sector.phi_a, sector.phi_b, length=N)
+    arc_o = [point(sector.r_outer, ϕ) for ϕ in ϕs]
+    arc_i = [point(sector.r_inner, ϕ) for ϕ in reverse(ϕs)]
+    return Meshes.Ngon(arc_o..., arc_i...)
+end
+
+function _Point2f(p::Meshes.Point)
+    x, y, z = ustrip.(m, [p.coords.x, p.coords.y, p.coords.z])
+    return Point2f(y, z)
+end
+
+function _Point3f(p::Meshes.Point)
+    x, y, z = ustrip.(m, [p.coords.x, p.coords.y, p.coords.z])
+    return Point3f(x, y, z)
+end
+
+_poly(circle::Meshes.Circle; N=32) = [(_Point3f(circle(t)) for t in range(0, 1, length=N))...]
+_poly(ngon::Meshes.Ngon) = [(_Point3f(pt) for pt in ngon.vertices)...]
+
+_poly2d(circle::Meshes.Circle; N=32) = [(_Point2f(circle(t)) for t in range(0, 1, length=N))...]
+_poly2d(ngon::Meshes.Ngon) = [(_Point2f(pt) for pt in ngon.vertices)...]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">_poly2d (generic function with 2 methods)</code></pre><h2 id="Modeling-the-Dartboard"><a class="docs-heading-anchor" href="#Modeling-the-Dartboard">Modeling the Dartboard</a><a id="Modeling-the-Dartboard-1"></a><a class="docs-heading-anchor-permalink" href="#Modeling-the-Dartboard" title="Permalink"></a></h2><p>Model the dartboard</p><pre><code class="language-julia hljs">dartboard_center = Meshes.Point(0m, 0m, 1.5m)
+dartboard_plane = Plane(dartboard_center, Meshes.Vec(1, 0, 0))
+
+function point(r::Unitful.Length, ϕ)
+    t = ustrip(m, r)
+    dartboard_plane(t * sin(ϕ), t * cos(ϕ))
+end
+
+# Scores on the Board
+ring1 = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5]
+ring2 = 3 .* ring1
+ring3 = ring1
+ring4 = 2 .* ring1
+board_points = hcat(ring1, ring2, ring3, ring4)
+
+# Colors on the board
+ring1 = repeat([black, white], 10)
+ring2 = repeat([red, green], 10)
+ring3 = ring1
+ring4 = ring2
+board_colors = hcat(ring1, ring2, ring3, ring4)
+
+# Sector geometries
+sector_width = 2π/20
+sector_centers = [n * sector_width for n in 0:19]
+phis_a = sector_centers .- sector_width/2
+phis_b = sector_centers .+ sector_width/2
+phis = Iterators.zip(phis_a, phis_b)
+rs = [ (16mm, 99mm), (99mm, 107mm), (107mm, 162mm), (162mm, 170mm) ]
+board_coords = Iterators.product(phis, rs)
+board_sectors = map(((phis, rs),) -&gt; Sector(rs, phis), board_coords)
+board_ngons = _Ngon.(board_sectors)
+
+# Consolidate the Sectors
+sector_data = Iterators.zip(board_ngons, board_points, board_colors)
+board_regions = map(args -&gt; ScoredRegion(args...), sector_data)
+
+# Center region
+bullseye_inner = ScoredRegion(Meshes.Circle(dartboard_plane, 6.35mm), 50, red)
+bullseye_outer = ScoredRegion(_Ngon(Sector((6.35mm, 16.0mm), (0.0, 2π)); N=32), 25, green)
+
+# Get set of all regions
+all_regions = vcat(vec(board_regions), bullseye_inner, bullseye_outer)
+
+fig = Figure()
+ax = Axis(fig[1, 1], xlabel=&quot;y [m]&quot;, ylabel=&quot;z [m]&quot;)
+ax.aspect = DataAspect()
+
+for region in board_regions
+    pts = _poly2d(region.geometry)
+    poly!(ax, pts, color=region.color)
+
+    centerPt = centroid(region.geometry)
+    center = ustrip.(u&quot;m&quot;, [centerPt.coords.y, centerPt.coords.z])
+    text!(ax, string(region.points), position=Point2f(center...), align=(:center,:center), color=:blue, fontsize=10)
+end
+
+fig</code></pre><img src="09b5f356.png" alt="Example block output"/><h2 id="Modeling-the-Dart-Trajectory"><a class="docs-heading-anchor" href="#Modeling-the-Dart-Trajectory">Modeling the Dart Trajectory</a><a id="Modeling-the-Dart-Trajectory-1"></a><a class="docs-heading-anchor-permalink" href="#Modeling-the-Dart-Trajectory" title="Permalink"></a></h2><p>Define a probability distribution for where the dart will land</p><pre><code class="nohighlight hljs"># TODO
+dist = MvNormal(μs, σs)</code></pre><p>Integrand function is the distribution&#39;s PDF value at any particular point</p><pre><code class="nohighlight hljs"># TODO
+function integrand(p::Point)
+    v_error = dist_center - p
+    pdf(dist, v_error)
+end</code></pre><p>Example image of trajectory probability distribution on board</p><h2 id="Strategy-Evaluation"><a class="docs-heading-anchor" href="#Strategy-Evaluation">Strategy Evaluation</a><a id="Strategy-Evaluation-1"></a><a class="docs-heading-anchor-permalink" href="#Strategy-Evaluation" title="Permalink"></a></h2><p>Use these tools to evaluate different aiming/throwing parameters and their impact on expected scores.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../tips/">« Tips</a><a class="docs-footer-nextpage" href="../../developer/CHANGELOG/">Changelog »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Wednesday 24 September 2025 01:50">Wednesday 24 September 2025</span>. Using Julia version 1.10.10.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
