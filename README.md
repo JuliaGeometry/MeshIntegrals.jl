@@ -1,3 +1,8 @@
+> [!WARNING]
+> The functionality of this package has been included in [Meshes.jl](https://github.com/JuliaGeometry/Meshes.jl) since version v0.57 of Meshes.jl,
+> see the [documentation of Meshes.jl](https://juliageometry.github.io/MeshesDocs/stable/calculus/). This package is deprecated
+> and it is recommended to use Meshes.jl directly.
+
 # MeshIntegrals.jl
 
 [![Docs-stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaGeometry.github.io/MeshIntegrals.jl/stable/)
