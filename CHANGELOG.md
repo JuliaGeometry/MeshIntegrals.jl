@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.17.3] - 2026-04-08
+
+- Deprecate package since all the functionality of MeshIntegrals.jl is now directly included in [Meshes.jl](https://github.com/JuliaGeometry/Meshes.jl) v0.57. The implementation in Meshes.jl will be continued and it is recommended to directly use Meshes.jl ([#222](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/222)).
+
 ## [0.17.2] - 2025-12-11
 
 - Updated compatibility entry for [Meshes.jl](https://github.com/JuliaGeometry/Meshes.jl) to support v0.56 ([#214](https://github.com/JuliaGeometry/MeshIntegrals.jl/pull/214)).
